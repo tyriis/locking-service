@@ -44,9 +44,6 @@ dependencies:
   timestring:
     specifier: ^7.0.0
     version: 7.0.0
-  xdg-basedir:
-    specifier: ^5.1.0
-    version: 5.1.0
   yaml:
     specifier: ^2.3.2
     version: 2.3.2
@@ -5421,11 +5418,6 @@ packages:
       imurmurhash: 0.1.4
       signal-exit: 3.0.7
     dev: true
-
-  /xdg-basedir@5.1.0:
-    resolution: {integrity: sha512-GCPAHLvrIH13+c0SuacwvRYj2SxJXQ4kaVTT5xgL3kPrz56XxkF21IGhjSE1+W0aw7gpBWRGXLCPnPby6lSpmQ==}
-    engines: {node: '>=12'}
-    dev: false
 
   /xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
