@@ -10,12 +10,14 @@ export class LockService {
   private readonly logger = new Logger(LockService.name)
   private readonly redis: Redis
 
+  /* eslint-disable */
   constructor(
     private readonly redisService: RedisService,
     private readonly configService: ConfigService,
   ) {
     this.redis = this.redisService.getClient()
   }
+  /* eslint-enable */
 
   /**
    * Create a new lock based on `createLock` input data

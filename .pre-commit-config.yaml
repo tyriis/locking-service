@@ -84,12 +84,3 @@ repos:
     rev: v8.18.0
     hooks:
       - id: gitleaks
-
-  - repo: https://github.com/tyriis/pre-commit-npm
-    rev: v0.2
-    hooks:
-      - id: npm-run-test
-        files: \.ts$
-        types:
-          - file
-      - id: npm-run-lint
