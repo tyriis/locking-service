@@ -1,0 +1,25 @@
+# Ignore everything
+*
+
+# Allow files and directories
+
+!/src
+!/.eslintignore
+!/.eslintrc.js
+!/.npmrc
+/!.prettierignore
+!/.prettierrc.js
+!/LICENSE
+!/nest-cli.json
+!/package.json
+!/pnpm-lock.yaml
+!/README.md
+!/tsconfig.build.json
+!/tsconfig.json
+
+# Ignore unnecessary files inside allowed directories
+# This should go after the allowed directories
+**/*~
+**/*.log
+**/.DS_Store
+**/Thumbs.db
