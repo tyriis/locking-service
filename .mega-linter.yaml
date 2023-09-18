@@ -20,3 +20,4 @@ YAML_PRETTIER_CONFIG_FILE: .prettierrc.yaml
 JSON_PRETTIER_CONFIG_FILE: .prettierrc.yaml
 JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.js
 JAVASCRIPT_ES_ARGUMENTS: "{src,apps,libs,test}/**/*.ts"
+JAVASCRIPT_ES_FILE_EXTENSIONS: ".ts"
