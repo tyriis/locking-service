@@ -15,6 +15,7 @@ ENABLE_LINTERS:
 FILTER_REGEX_EXCLUDE: (\.envrc|\.git/*|node_modules/*|dist/*)
 MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.yaml
 YAML_YAMLLINT_CONFIG_FILE: .yamllint.yaml
+YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: (pnpm-lock\.yaml)
 YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.*\.sops\..*)
 YAML_PRETTIER_CONFIG_FILE: .prettierrc.yaml
 JSON_PRETTIER_CONFIG_FILE: .prettierrc.yaml
