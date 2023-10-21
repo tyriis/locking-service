@@ -71,8 +71,8 @@ devDependencies:
     specifier: 2.0.15
     version: 2.0.15
   '@types/timestring':
-    specifier: 6.0.3
-    version: 6.0.3
+    specifier: 6.0.4
+    version: 6.0.4
   '@typescript-eslint/eslint-plugin':
     specifier: 6.8.0
     version: 6.8.0(@typescript-eslint/parser@6.8.0)(eslint@8.51.0)(typescript@5.2.2)
@@ -1389,8 +1389,8 @@ packages:
       '@types/superagent': 4.1.18
     dev: true
 
-  /@types/timestring@6.0.3:
-    resolution: {integrity: sha512-Y1YcM1SewXEDjFjERVjHuQ2lqeACSHGT7dVdp8oNy9OQtxYJj7KdcLWmSpwGlA00xdc6lcU8rnZv12Tt10nxjg==}
+  /@types/timestring@6.0.4:
+    resolution: {integrity: sha512-dH4FlIn2s6EJw8PsAzanFGYZKu/4VcqIb7gMglB9bLDfgb5rkHulXzJLhxpxQXmu2IC+V8qV+Ut7Ejmw9JtVgw==}
     dev: true
 
   /@types/validator@13.11.1:
