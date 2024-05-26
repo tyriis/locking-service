@@ -1,0 +1,200 @@
+---
+openapi: 3.0.0
+paths:
+  /:
+    get:
+      operationId: AppController_getIdentifier
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: string
+  /health:
+    get:
+      operationId: AppController_getHealth
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: string
+  /locks:
+    post:
+      operationId: LockController_create
+      summary: ""
+      description: Create a new lock
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateLockDto"
+      responses:
+        "201":
+          description: The lock has been successfully created.
+          schema:
+            $ref: "#/components/schemas/LockDto"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateLockDto"
+        "400":
+          description: Input validation failed
+        "409":
+          description: A lock with given `key` already exists.
+          content:
+            application/json:
+              schema:
+                example:
+                  statusCode: 409
+                  message: lock 'some-fancy-lock.name' already aquired!
+        "500":
+          description: Internal server error
+      tags:
+        - locks
+    get:
+      operationId: LockController_findAll
+      summary: ""
+      description: Retrieve all active locks
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LockDto"
+        "500":
+          description: Internal server error
+      tags:
+        - locks
+  /locks/{key}:
+    get:
+      operationId: LockController_findOne
+      summary: ""
+      description: Retrieve an active lock by its `key`
+      parameters:
+        - name: key
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LockDto"
+        "400":
+          description: Input validation failed
+          content:
+            application/json:
+              schema:
+                example:
+                  message:
+                    - key must be longer than or equal to 3 characters
+                  error: Bad Request
+                  statusCode: 400
+        "404":
+          description: Lock with given key not found
+          content:
+            application/json:
+              schema:
+                example:
+                  statusCode: 404
+                  error: Not Found
+                  message: lock 'some-fancy-lock.name' not found
+        "500":
+          description: Internal server error
+      tags:
+        - locks
+    delete:
+      operationId: LockController_remove
+      summary: ""
+      description: Remove an existing lock by its `key`
+      parameters:
+        - name: key
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lock with given `key` has been deleted
+        "400":
+          description: Input validation failed
+        "500":
+          description: Internal server error
+      tags:
+        - locks
+info:
+  title: locking-service
+  description: Locking Service API documentation.
+  version: 0.0.7
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    CreateLockDto:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The lock key/identifier
+          example: some-fancy-lock.name
+          minLength: 3
+        owner:
+          type: string
+          description: The owner of the lock
+          example: Jane Doe
+        duration:
+          type: string
+          description: The lock duration as timestring
+          example: 1h20m
+          minLength: 2
+      required:
+        - key
+        - owner
+    LockDto:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The lock key/identifier
+          example: some-fancy-lock.name
+          minLength: 3
+        owner:
+          type: string
+          description: The owner of the lock
+          example: Jane Doe
+        duration:
+          type: number
+          description: The lock duration in seconds
+          example: 4200
+          minimum: 1
+        createdAt:
+          format: date-time
+          type: string
+          description: The lock creation as Date string
+          example: "2023-09-12T22:46:59.167Z"
+        expireAt:
+          format: date-time
+          type: string
+          description: The lock expire as Date string
+          example: "2023-09-13T00:06:59.167Z"
+      required:
+        - key
+        - owner
+        - duration
+        - createdAt
+        - expireAt
