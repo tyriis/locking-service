@@ -33,8 +33,8 @@ dependencies:
     specifier: 5.4.1
     version: 5.4.1
   joi:
-    specifier: 17.13.1
-    version: 17.13.1
+    specifier: 17.13.2
+    version: 17.13.2
   reflect-metadata:
     specifier: 0.2.2
     version: 0.2.2
@@ -3751,8 +3751,8 @@ packages:
       - ts-node
     dev: true
 
-  /joi@17.13.1:
-    resolution: {integrity: sha512-vaBlIKCyo4FCUtCm7Eu4QZd/q02bWcxfUO6YSXAZOWF6gzcLBeba8kwotUdYJjDLW8Cz8RywsSOqiNJZW0mNvg==}
+  /joi@17.13.2:
+    resolution: {integrity: sha512-QJQKY10YowIi6yUpDQG9YpeWLD+OHYlY/La8gk7VitrXfy34quHwCu4QKNlBV1rpgQj0YpnWWl4JM+3DU6GapQ==}
     dependencies:
       '@hapi/hoek': 9.3.0
       '@hapi/topo': 5.1.0
