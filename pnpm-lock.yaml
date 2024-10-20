@@ -53,8 +53,8 @@ devDependencies:
     specifier: 10.4.5
     version: 10.4.5
   '@nestjs/schematics':
-    specifier: 10.2.1
-    version: 10.2.1(typescript@5.6.3)
+    specifier: 10.2.2
+    version: 10.2.2(typescript@5.6.3)
   '@nestjs/testing':
     specifier: 10.4.5
     version: 10.4.5(@nestjs/common@10.4.5)(@nestjs/core@10.4.5)(@nestjs/platform-express@10.4.5)
@@ -984,7 +984,7 @@ packages:
       '@angular-devkit/core': 17.3.8(chokidar@3.6.0)
       '@angular-devkit/schematics': 17.3.8(chokidar@3.6.0)
       '@angular-devkit/schematics-cli': 17.3.8(chokidar@3.6.0)
-      '@nestjs/schematics': 10.2.1(chokidar@3.6.0)(typescript@5.3.3)
+      '@nestjs/schematics': 10.2.2(chokidar@3.6.0)(typescript@5.3.3)
       chalk: 4.1.2
       chokidar: 3.6.0
       cli-table3: 0.6.5
@@ -1106,8 +1106,8 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@nestjs/schematics@10.2.1(chokidar@3.6.0)(typescript@5.3.3):
-    resolution: {integrity: sha512-mrcDEts7PxLO+4EaZBqobq0Mg5AmvvamQYPSZvJtwK7cAOcg+TGFYJNEECqh6UZVpj8aUcAo6M9ciKGpKm09Ng==}
+  /@nestjs/schematics@10.2.2(chokidar@3.6.0)(typescript@5.3.3):
+    resolution: {integrity: sha512-D4pJ46E8llCA7WPr3cV6sfRqDlvnTjQWnF1fLyKYD3Ldl+KPtlLyIcxaqlLTB0YR9ItKNKIZTJzUehRxR7UUsQ==}
     peerDependencies:
       typescript: '>=4.8.2'
     dependencies:
@@ -1121,8 +1121,8 @@ packages:
       - chokidar
     dev: true
 
-  /@nestjs/schematics@10.2.1(typescript@5.6.3):
-    resolution: {integrity: sha512-mrcDEts7PxLO+4EaZBqobq0Mg5AmvvamQYPSZvJtwK7cAOcg+TGFYJNEECqh6UZVpj8aUcAo6M9ciKGpKm09Ng==}
+  /@nestjs/schematics@10.2.2(typescript@5.6.3):
+    resolution: {integrity: sha512-D4pJ46E8llCA7WPr3cV6sfRqDlvnTjQWnF1fLyKYD3Ldl+KPtlLyIcxaqlLTB0YR9ItKNKIZTJzUehRxR7UUsQ==}
     peerDependencies:
       typescript: '>=4.8.2'
     dependencies:
