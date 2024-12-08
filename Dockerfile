@@ -19,11 +19,11 @@ RUN pnpm run test:cov
 FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/dist /app/dist
+COPY --from=base /app/package.json /app/package.json
 COPY --from=base /app/LICENSE /app/LICENSE
 COPY --from=base /app/nest-cli.json /app/nest-cli.json
 
+RUN chown -R node:node /app/package.json
 USER node
-COPY ./package.json /app/package.json
-
 EXPOSE 3000
 CMD [ "pnpm", "run", "start:prod" ]
