@@ -1,32 +1,63 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD051 -->
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
 
-## Description
+[![taskfile][taskfile-shield]][taskfile-url]
+[![pre-commit][pre-commit-shield]][pre-commit-url]
+[![renovate][renovate-shield]][renovate-url]
+[![NestJS][nestjs-shield]][nestjs-url]
+[![TypeScript][typescript-shield]][typescript-url]
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# locking-service
+
+REST API service built with NestJS that provides distributed locking capabilities using Redis as backend.
+
+## User Story
+
+As an automation engineer, I need a locking service API to:
+
+- Create locks with configurable TTL using timestring format (e.g. "5m", "1h")
+- List active locks and their status
+- Auto-expiration
+- Owner validation for lock operations
+
+So that I can coordinate access to shared resources across distributed systems.
 
 ## Installation
 
 ```bash
 pnpm install
+```
+
+## Configuration
+
+You can pass `CONFIG_PATH` env variable to point to your `configuration.yaml`. Default path is `$(XDG_CONFIG_HOME)/locking-service/configuration.yaml`
+
+You can use env variables as placeholder in the configuration.yaml
+
+```yaml
+---
+app:
+  port: 3000
+  host: 0.0.0.0
+
+redis:
+  host: ${env.REDIS_HOST}
+  port: 6379
+  keyPrefix: locking-service.
+  # sentinels:
+  #   - host: ${env.REDIS_HOST}
+  #     port: 26379
+  # name: redis-master
 ```
 
 ## Running the app
@@ -55,16 +86,20 @@ $ pnpm run test:e2e
 $ pnpm run test:cov
 ```
 
-## Support
+## Lint
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+# run eslint
+$ pnpm run lint
+```
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+[taskfile-shield]: https://img.shields.io/badge/Taskfile-enabled-brightgreen?logo=task
+[taskfile-url]: https://taskfile.dev/
+[pre-commit-shield]: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
+[pre-commit-url]: https://github.com/pre-commit/pre-commit
+[renovate-shield]: https://img.shields.io/badge/renovate-enabled-brightgreen?logo=renovate&logoColor=308BE3
+[renovate-url]: https://www.mend.io/renovate/
+[nestjs-shield]: https://img.shields.io/badge/NestJS-10.4.13-E0234E?logo=nestjs&logoColor=E0234E
+[nestjs-url]: https://nestjs.com/
+[typescript-shield]: https://img.shields.io/badge/TypeScript-5.7.2-3178C6?logo=typescript
+[typescript-url]: https://www.typescriptlang.org/
