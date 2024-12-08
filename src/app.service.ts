@@ -4,7 +4,7 @@ import { ConfigService } from "@nestjs/config"
 @Injectable()
 export class AppService implements BeforeApplicationShutdown {
   private readonly logger = new Logger(AppService.name)
-  constructor(private configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {}
   beforeApplicationShutdown(signal: string) {
     this.logger.warn(signal)
   }

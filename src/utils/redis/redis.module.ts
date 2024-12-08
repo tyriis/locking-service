@@ -5,6 +5,6 @@ import { RedisConfigService } from "./redis-config.service"
 
 export const redisModule: DynamicModule = RedisModule.forRootAsync({
   imports: [ConfigModule],
-  useClass: RedisConfigService,
   inject: [ConfigService],
+  useClass: RedisConfigService,
 })

@@ -1,9 +1,7 @@
 import * as Joi from "joi"
 
 export const envValidationSchema: Joi.ObjectSchema = Joi.object({
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   NODE_ENV: Joi.string().valid("development", "production", "test").required(),
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   CONFIG_PATH: Joi.string().optional(),
 })
 

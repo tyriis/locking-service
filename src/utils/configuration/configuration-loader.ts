@@ -16,6 +16,24 @@ const validate = (config: Record<string, unknown>): Record<string, unknown> => {
   return config
 }
 
+const replaceEnvVars = (value: any): any => {
+  if (typeof value === "string") {
+    const envRegex = /\${env\.(.*?)}/g
+    return value.replace(envRegex, (_, envVar): string => {
+      const env = process.env[envVar]
+      if (!env) {
+        throw new Error(`Environment variable ${envVar} is not set!`)
+      }
+      return env
+    })
+  } else if (typeof value === "object" && value !== null) {
+    for (const key in value) {
+      value[key] = replaceEnvVars(value[key])
+    }
+  }
+  return value
+}
+
 export const configurationLoader = () => {
   // check if file exists
   if (!fs.existsSync(CONFIG_PATH)) {
@@ -23,6 +41,8 @@ export const configurationLoader = () => {
   }
   logger.log(`loading configuration: ${CONFIG_PATH}`)
   const config = YAML.parse(fs.readFileSync(CONFIG_PATH, "utf8")) as Record<string, unknown>
+  // replace all matches of ${env} with the actual environment variable
+  replaceEnvVars(config)
   // as we can not validate our config over the build in config validator, we need to do it here
   const validatedConfig = validate(config)
   // inject npm values

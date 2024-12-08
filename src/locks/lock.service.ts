@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, Logger, NotFoundException } from "@nestjs/common"
 import { CreateLockDto, ILock } from "src/locks"
-import { InjectRedis } from "@liaoliaots/nestjs-redis"
+import { RedisService, DEFAULT_REDIS } from "@liaoliaots/nestjs-redis"
 import Redis from "ioredis"
 import * as timestring from "timestring"
 import { ConfigService } from "@nestjs/config"
@@ -8,13 +8,17 @@ import { ConfigService } from "@nestjs/config"
 @Injectable()
 export class LockService {
   private readonly logger = new Logger(LockService.name)
+  private readonly redis: Redis
 
-  /* eslint-disable */
   constructor(
     private readonly configService: ConfigService,
-    @InjectRedis() private readonly redis: Redis,
-  ) {}
-  /* eslint-enable */
+    private readonly redisService: RedisService,
+  ) {
+    this.redis = this.redisService.getOrThrow(DEFAULT_REDIS)
+    if (this.redis === null) {
+      this.logger.error("Redis connection is not available")
+    }
+  }
 
   /**
    * Create a new lock based on `createLock` input data
