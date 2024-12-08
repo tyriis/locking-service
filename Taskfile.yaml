@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
 version: "3"
 
 vars:
@@ -7,3 +8,4 @@ vars:
 
 includes:
   pre-commit: .taskfiles/pre-commit/Taskfile.yaml
+  pnpm: .taskfiles/pnpm/Taskfile.yaml

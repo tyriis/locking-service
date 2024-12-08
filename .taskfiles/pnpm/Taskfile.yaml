@@ -1,0 +1,9 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
+version: "3"
+
+tasks:
+  patch:
+    desc: pnpm version patch
+    cmds:
+      - 'pnpm version patch -m "release: %s"'
