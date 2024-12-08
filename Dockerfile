@@ -22,7 +22,6 @@ COPY --from=build /app/dist /app/dist
 COPY --from=base /app/package.json /app/package.json
 COPY --from=base /app/LICENSE /app/LICENSE
 COPY --from=base /app/nest-cli.json /app/nest-cli.json
-COPY --from=base /app/openapi.yaml /app/openapi.yaml
 
 USER node
 EXPOSE 3000
