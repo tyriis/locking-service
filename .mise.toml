@@ -13,4 +13,4 @@ pre-commit = "4.0.1"
 # https://taskfile.dev/
 task = "3.38.0"
 # https://pnpmp.io
-pnpm = "9.15.2"
+pnpm = "9.15.3"
