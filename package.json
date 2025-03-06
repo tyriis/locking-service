@@ -24,7 +24,7 @@
   "dependencies": {
     "@liaoliaots/nestjs-redis": "10.0.0",
     "@nestjs/common": "11.0.11",
-    "@nestjs/config": "4.0.0",
+    "@nestjs/config": "4.0.1",
     "@nestjs/core": "11.0.11",
     "@nestjs/platform-express": "11.0.11",
     "@nestjs/swagger": "11.0.6",
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@nestjs/cli": "11.0.5",
-    "@nestjs/schematics": "11.0.1",
+    "@nestjs/schematics": "11.0.2",
     "@nestjs/testing": "11.0.11",
     "@types/express": "5.0.0",
     "@types/jest": "29.5.14",
