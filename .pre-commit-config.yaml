@@ -81,6 +81,6 @@ repos:
           - .prettierrc.js
 
   - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.26.0
+    rev: v8.27.0
     hooks:
       - id: gitleaks
