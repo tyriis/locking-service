@@ -3,7 +3,7 @@ NODE_ENV = "development"
 
 [tools]
 # https://direnv.net/
-direnv = "2.36.0"
+direnv = "2.37.0"
 # https://gitleaks.io/
 gitleaks = "8.27.2"
 # https://nodejs.org/
