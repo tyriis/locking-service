@@ -9,7 +9,7 @@ gitleaks = "8.28.0"
 # https://nodejs.org/
 node = "22.18.0"
 # https://pre-commit.com/
-pre-commit = "4.2.0"
+pre-commit = "4.3.0"
 # https://taskfile.dev/
 task = "3.38.0"
 # https://pnpmp.io
