@@ -6,7 +6,7 @@ settings:
 
 overrides:
   micromatch@<4.0.8: 4.0.8
-  path-to-regexp@<0.1.12: 8.2.0
+  path-to-regexp@<0.1.12: 8.3.0
 
 importers:
 
