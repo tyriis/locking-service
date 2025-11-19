@@ -5,7 +5,7 @@ NODE_ENV = "development"
 # https://direnv.net/
 direnv = "2.37.1"
 # https://gitleaks.io/
-gitleaks = "8.29.0"
+gitleaks = "8.29.1"
 # https://nodejs.org/
 node = "24.11.1"
 # https://pre-commit.com/
