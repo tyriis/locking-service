@@ -38,7 +38,7 @@
     "yaml": "2.8.1"
   },
   "devDependencies": {
-    "@nestjs/cli": "11.0.12",
+    "@nestjs/cli": "11.0.13",
     "@nestjs/schematics": "11.0.9",
     "@nestjs/testing": "11.1.9",
     "@types/express": "5.0.5",
