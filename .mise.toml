@@ -7,7 +7,7 @@ direnv = "2.37.1"
 # https://gitleaks.io/
 gitleaks = "8.30.0"
 # https://nodejs.org/
-node = "24.12.0"
+node = "24.13.0"
 # https://pre-commit.com/
 pre-commit = "4.5.1"
 # https://taskfile.dev/
