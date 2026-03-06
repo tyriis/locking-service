@@ -74,8 +74,8 @@ importers:
         specifier: 24.11.0
         version: 24.11.0
       '@types/supertest':
-        specifier: 6.0.3
-        version: 6.0.3
+        specifier: 7.2.0
+        version: 7.2.0
       '@types/timestring':
         specifier: 7.0.0
         version: 7.0.0
@@ -919,8 +919,8 @@ packages:
   '@types/superagent@8.1.1':
     resolution: {integrity: sha512-YQyEXA4PgCl7EVOoSAS3o0fyPFU6erv5mMixztQYe1bqbWmmn8c+IrqoxjQeZe4MgwXikgcaZPiI/DsbmOVlzA==}
 
-  '@types/supertest@6.0.3':
-    resolution: {integrity: sha512-8WzXq62EXFhJ7QsH3Ocb/iKQ/Ty9ZVWnVzoTKc9tyyFRRF3a74Tk2+TLFgaFFw364Ere+npzHKEJ6ga2LzIL7w==}
+  '@types/supertest@7.2.0':
+    resolution: {integrity: sha512-uh2Lv57xvggst6lCqNdFAmDSvoMG7M/HDtX4iUCquxQ5EGPtaPM5PL5Hmi7LCvOG8db7YaCPNJEeoI8s/WzIQw==}
 
   '@types/timestring@7.0.0':
     resolution: {integrity: sha512-ZFdmx8cDafCuTsVdP0xEOj8MEHKFo0P7x4lJPMZRKryoURfaO3MtJp4Ih0l35r8tM/+hnTGSAEL9PYf1N/3tbg==}
@@ -4019,7 +4019,7 @@ snapshots:
       '@types/methods': 1.1.4
       '@types/node': 24.11.0
 
-  '@types/supertest@6.0.3':
+  '@types/supertest@7.2.0':
     dependencies:
       '@types/methods': 1.1.4
       '@types/superagent': 8.1.1
