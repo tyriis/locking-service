@@ -6,7 +6,7 @@ default_stages:
 
 repos:
   - repo: https://github.com/thlorenz/doctoc
-    rev: v2.3.0
+    rev: v2.4.0
     hooks:
       - id: doctoc
         args:
