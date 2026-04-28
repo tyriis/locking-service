@@ -11,6 +11,6 @@ node = "24.15.0"
 # https://pre-commit.com/
 pre-commit = "4.6.0"
 # https://taskfile.dev/
-task = "3.38.0"
+task = "3.50.0"
 # https://pnpmp.io
 pnpm = "10.33.2"
