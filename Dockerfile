@@ -1,4 +1,4 @@
-FROM node:24.15.0-slim@sha256:03eae3ef7e88a9de535496fb488d67e02b9d96a063a8967bae657744ecd513f2 AS base
+FROM node:24.15.0-slim@sha256:f96cade014243001e5c18f1befaf0bf44564f7cf358287ef691114dcb04b173b AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN npm install -g pnpm@10.4.1
