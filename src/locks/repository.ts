@@ -14,7 +14,11 @@ export class RedisLockRepository implements LockRepository {
   async get(key: string): Promise<Lock | null> {
     const val = await this.redis.get(key)
     if (!val) return null
-    return JSON.parse(val) as Lock
+    try {
+      return JSON.parse(val) as Lock
+    } catch (e) {
+      return null
+    }
   }
 
   async set(key: string, lock: Lock, durationSeconds: number): Promise<void> {
@@ -35,6 +39,13 @@ export class RedisLockRepository implements LockRepository {
     
     return values
       .filter((v): v is string => v !== null)
-      .map(v => JSON.parse(v) as Lock)
+      .map(v => {
+        try {
+          return JSON.parse(v) as Lock
+        } catch (e) {
+          return null
+        }
+      })
+      .filter((v): v is Lock => v !== null)
   }
 }
