@@ -1,7 +1,7 @@
 import timestring from 'timestring'
-import { LockRepository } from './repository.ts'
-import { CreateLockInput, Lock } from './schema.ts'
-import { ConflictError, NotFoundError } from '../errors.ts'
+import { LockRepository } from './repository.js'
+import { CreateLockInput, Lock } from './schema.js'
+import { ConflictError, NotFoundError } from '../errors.js'
 
 export class LockService {
   constructor(

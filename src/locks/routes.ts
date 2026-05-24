@@ -1,8 +1,8 @@
 import { FastifyInstance, FastifyPluginAsync } from 'fastify'
-import { ZodTypeProvider } from '@fastify/type-provider-zod'
+import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-import { LockService } from './service.ts'
-import { createLockSchema, lockSchema } from './schema.ts'
+import { LockService } from './service.js'
+import { createLockSchema, lockSchema } from './schema.js'
 
 interface RouteOptions {
   lockService: LockService

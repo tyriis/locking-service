@@ -1,5 +1,5 @@
 import Redis from 'ioredis'
-import { Lock } from './schema'
+import { Lock } from './schema.js'
 
 export interface LockRepository {
   get(key: string): Promise<Lock | null>

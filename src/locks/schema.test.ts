@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { createLockSchema, lockSchema } from './schema.ts'
+import { createLockSchema, lockSchema } from './schema.js'
 
 describe('Lock Schemas', () => {
   it('validates CreateLock input', () => {

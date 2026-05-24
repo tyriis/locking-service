@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import { LockService } from './service.ts'
-import { LockRepository } from './repository.ts'
-import { ConflictError, NotFoundError } from '../errors.ts'
-import { Lock } from './schema.ts'
+import { LockService } from './service.js'
+import { LockRepository } from './repository.js'
+import { ConflictError, NotFoundError } from '../errors.js'
+import { Lock } from './schema.js'
 
 describe('LockService', () => {
   const mockRepo = {
