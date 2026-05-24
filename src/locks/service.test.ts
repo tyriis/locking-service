@@ -36,4 +36,18 @@ describe('LockService', () => {
     vi.mocked(mockRepo.get).mockResolvedValueOnce(null)
     await expect(service.findOne('b')).rejects.toThrow(NotFoundError)
   })
+
+  it('removes a lock', async () => {
+    vi.mocked(mockRepo.delete).mockResolvedValueOnce(undefined)
+    const result = await service.remove('a')
+    expect(result).toBeNull()
+    expect(mockRepo.delete).toHaveBeenCalledWith('a')
+  })
+
+  it('finds all locks', async () => {
+    vi.mocked(mockRepo.getAll).mockResolvedValueOnce([{ key: 'a' } as Lock])
+    const result = await service.findAll()
+    expect(result).toEqual([{ key: 'a' }])
+    expect(mockRepo.getAll).toHaveBeenCalledWith('prefix:')
+  })
 })
