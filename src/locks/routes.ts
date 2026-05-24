@@ -49,11 +49,14 @@ export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
 
     app.delete('/locks/:key', {
       schema: {
-        params: z.object({ key: z.string() })
+        params: z.object({ key: z.string() }),
+        response: {
+          204: z.null()
+        }
       }
     }, async (request, reply) => {
       await options.lockService.remove(request.params.key)
-      return reply.send(null)
+      return reply.code(204).send(null)
     })
   }
 }

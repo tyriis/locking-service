@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
 import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
-import Redis from 'ioredis'
+import { Redis } from 'ioredis'
 import { loadConfig } from './config.js'
 import { RedisLockRepository } from './locks/repository.js'
 import { LockService } from './locks/service.js'
@@ -19,7 +19,7 @@ export function buildApp() {
   app.setSerializerCompiler(serializerCompiler)
 
   // Error Handler
-  app.setErrorHandler((error, request, reply) => {
+  app.setErrorHandler((error: any, request, reply) => {
     if (error instanceof DomainError) {
       app.log.warn(error)
       return reply.status(error.statusCode).send({

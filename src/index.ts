@@ -5,7 +5,7 @@ const { app, config } = buildApp()
 
 const start = async () => {
   try {
-    const port = parseInt(config.PORT, 10)
+    const port = config.PORT
     await app.listen({ port, host: '0.0.0.0' })
   } catch (err) {
     app.log.error(err)
