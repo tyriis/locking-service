@@ -1,5 +1,5 @@
 import Redis from 'ioredis'
-import { Lock } from './schema.ts'
+import { Lock } from './schema'
 
 export interface LockRepository {
   get(key: string): Promise<Lock | null>
@@ -30,7 +30,14 @@ export class RedisLockRepository implements LockRepository {
   }
 
   async getAll(prefix: string = ''): Promise<Lock[]> {
-    const keys = await this.redis.keys(`${prefix}*`)
+    let cursor = '0'
+    const keys: string[] = []
+    do {
+      const [nextCursor, elements] = await this.redis.scan(cursor, 'MATCH', `${prefix}*`, 'COUNT', 100)
+      cursor = nextCursor
+      keys.push(...elements)
+    } while (cursor !== '0')
+
     if (keys.length === 0) return []
     
     // remove prefix for internal querying if your system needs it, 
@@ -38,14 +45,14 @@ export class RedisLockRepository implements LockRepository {
     const values = await this.redis.mget(keys)
     
     return values
-      .filter((v): v is string => v !== null)
-      .map(v => {
+      .filter((v: string | null): v is string => v !== null)
+      .map((v: string) => {
         try {
           return JSON.parse(v) as Lock
         } catch (e) {
           return null
         }
       })
-      .filter((v): v is Lock => v !== null)
+      .filter((v: Lock | null): v is Lock => v !== null)
   }
 }
