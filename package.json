@@ -1,87 +1,46 @@
 {
   "name": "locking-service",
   "version": "0.1.1",
-  "description": "",
-  "author": "",
-  "private": true,
-  "license": "MIT",
+  "description": "Locking service rewrite",
+  "type": "module",
+  "imports": {
+    "#root/*": {
+      "development": "./src/*.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "main": "dist/index.js",
   "scripts": {
-    "test2": "node test.js",
-    "build": "nest build",
-    "format": "prettier --write --ignore-path .prettierignore --config .prettierrc.js \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
-    "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "clean": "rm -rf dist",
+    "dev": "NODE_OPTIONS=--conditions=development tsx watch src/index.ts",
+    "build": "pnpm run clean && tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "packageManager": "pnpm@10.9.0",
+  "devDependencies": {
+    "@types/node": "22.0.0",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3",
+    "vitest": "^2.0.4"
   },
   "dependencies": {
-    "@liaoliaots/nestjs-redis": "10.0.0",
-    "@nestjs/common": "11.1.23",
-    "@nestjs/config": "4.0.4",
-    "@nestjs/core": "11.1.23",
-    "@nestjs/platform-express": "11.1.23",
-    "@nestjs/swagger": "11.4.4",
-    "class-transformer": "0.5.1",
-    "class-validator": "0.15.1",
-    "ioredis": "5.10.1",
-    "joi": "18.2.1",
-    "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.2",
-    "timestring": "7.0.0",
-    "yaml": "2.9.0"
-  },
-  "devDependencies": {
-    "@nestjs/cli": "11.0.21",
-    "@nestjs/schematics": "11.1.0",
-    "@nestjs/testing": "11.1.23",
-    "@types/express": "5.0.6",
-    "@types/jest": "30.0.0",
-    "@types/node": "24.12.4",
-    "@types/supertest": "6.0.3",
-    "@types/timestring": "7.0.0",
-    "@typescript-eslint/eslint-plugin": "8.59.4",
-    "@typescript-eslint/parser": "8.59.4",
-    "eslint": "10.4.0",
-    "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-prettier": "5.5.5",
-    "jest": "30.4.2",
-    "prettier": "3.8.3",
-    "source-map-support": "0.5.21",
-    "supertest": "7.2.2",
-    "ts-jest": "29.4.11",
-    "ts-loader": "9.5.7",
-    "ts-node": "10.9.2",
-    "tsconfig-paths": "4.2.0",
-    "typescript": "5.9.3"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
-  },
-  "pnpm": {
-    "overrides": {
-      "micromatch@<4.0.8": "4.0.8",
-      "path-to-regexp@<0.1.12": "8.4.2"
-    }
+    "fastify": "^4.28.1",
+    "zod": "^3.23.8",
+    "zod-to-json-schema": "^3.23.2",
+    "fastify-type-provider-zod": "^4.0.2",
+    "ioredis": "^5.4.1",
+    "timestring": "^7.0.0",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/sdk-node": "^0.52.1",
+    "@opentelemetry/instrumentation-http": "^0.52.1",
+    "@fastify/otel": "^0.18.1"
   }
 }
