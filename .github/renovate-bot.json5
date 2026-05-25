@@ -1,8 +1,8 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  username: "tyriis-automation[bot]",
-  gitAuthor: "tyriis-automation <133711747+tyriis-automation[bot]@users.noreply.github.com>",
-  platformCommit: "enabled",
-  platform: "github",
-  repositories: ["tyriis/locking-service"],
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  username: 'tyriis-automation[bot]',
+  gitAuthor: 'tyriis-automation <133711747+tyriis-automation[bot]@users.noreply.github.com>',
+  platformCommit: 'enabled',
+  platform: 'github',
+  repositories: ['tyriis/locking-service'],
 }

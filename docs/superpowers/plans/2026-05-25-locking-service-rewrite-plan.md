@@ -13,6 +13,7 @@
 ### Task 1: Scaffolding & Initial Setup
 
 **Files:**
+
 - Create: `package.json`
 - Create: `tsconfig.json`
 - Create: `vitest.config.ts`
@@ -138,6 +139,7 @@ git commit -m "chore: scaffold project structure and config"
 ### Task 2: Domain Schema (Zod)
 
 **Files:**
+
 - Create: `src/locks/schema.ts`
 - Create: `src/locks/schema.test.ts`
 
@@ -168,7 +170,7 @@ describe('Lock Schemas', () => {
       owner: 'user',
       duration: '10m',
       createdAt: new Date().toISOString(),
-      expireAt: new Date(Date.now() + 600000).toISOString()
+      expireAt: new Date(Date.now() + 600000).toISOString(),
     }
     const result = lockSchema.safeParse(lock)
     expect(result.success).toBe(true)
@@ -222,6 +224,7 @@ git commit -m "feat: define domain schemas using zod"
 ### Task 3: Error Classes
 
 **Files:**
+
 - Create: `src/errors.ts`
 
 - [ ] **Step 1: Write error classes implementation**
@@ -230,7 +233,10 @@ Create `src/errors.ts`:
 
 ```typescript
 export class DomainError extends Error {
-  constructor(public message: string, public statusCode: number) {
+  constructor(
+    public message: string,
+    public statusCode: number
+  ) {
     super(message)
     this.name = 'DomainError'
   }
@@ -261,6 +267,7 @@ git commit -m "feat: add domain error classes"
 ### Task 4: Repository Layer
 
 **Files:**
+
 - Create: `src/locks/repository.ts`
 
 - [ ] **Step 1: Write Repository Implementation**
@@ -298,14 +305,12 @@ export class RedisLockRepository implements LockRepository {
   async getAll(prefix: string = ''): Promise<Lock[]> {
     const keys = await this.redis.keys(`${prefix}*`)
     if (keys.length === 0) return []
-    
-    // remove prefix for internal querying if your system needs it, 
+
+    // remove prefix for internal querying if your system needs it,
     // but in vanilla ioredis you fetch with the literal key found.
     const values = await this.redis.mget(keys)
-    
-    return values
-      .filter((v): v is string => v !== null)
-      .map(v => JSON.parse(v) as Lock)
+
+    return values.filter((v): v is string => v !== null).map((v) => JSON.parse(v) as Lock)
   }
 }
 ```
@@ -320,6 +325,7 @@ git commit -m "feat: implement RedisLockRepository"
 ### Task 5: Service Layer
 
 **Files:**
+
 - Create: `src/locks/service.test.ts`
 - Create: `src/locks/service.ts`
 
@@ -339,7 +345,7 @@ describe('LockService', () => {
     get: vi.fn(),
     set: vi.fn(),
     delete: vi.fn(),
-    getAll: vi.fn()
+    getAll: vi.fn(),
   } as unknown as LockRepository
 
   const service = new LockService(mockRepo, 'prefix:')
@@ -353,7 +359,9 @@ describe('LockService', () => {
 
   it('throws ConflictError if lock exists', async () => {
     vi.mocked(mockRepo.get).mockResolvedValueOnce({} as Lock)
-    await expect(service.create({ key: 'a', owner: 'b', duration: '10s' })).rejects.toThrow(ConflictError)
+    await expect(service.create({ key: 'a', owner: 'b', duration: '10s' })).rejects.toThrow(
+      ConflictError
+    )
   })
 
   it('finds one lock', async () => {
@@ -405,7 +413,7 @@ export class LockService {
       owner: input.owner,
       duration: input.duration,
       createdAt: createdAt.toISOString(),
-      expireAt: expireAt.toISOString()
+      expireAt: expireAt.toISOString(),
     }
 
     await this.repo.set(input.key, lock, durationSeconds)
@@ -446,6 +454,7 @@ git commit -m "feat: implement LockService with tests"
 ### Task 6: Fastify Routes
 
 **Files:**
+
 - Create: `src/locks/routes.ts`
 
 - [ ] **Step 1: Write Route Implementations**
@@ -467,49 +476,65 @@ export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
   return async (fastify: FastifyInstance) => {
     const app = fastify.withTypeProvider<ZodTypeProvider>()
 
-    app.post('/locks', {
-      schema: {
-        body: createLockSchema,
-        response: {
-          201: lockSchema
-        }
+    app.post(
+      '/locks',
+      {
+        schema: {
+          body: createLockSchema,
+          response: {
+            201: lockSchema,
+          },
+        },
+      },
+      async (request, reply) => {
+        const lock = await options.lockService.create(request.body)
+        return reply.code(201).send(lock)
       }
-    }, async (request, reply) => {
-      const lock = await options.lockService.create(request.body)
-      return reply.code(201).send(lock)
-    })
+    )
 
-    app.get('/locks', {
-      schema: {
-        response: {
-          200: z.array(lockSchema)
-        }
+    app.get(
+      '/locks',
+      {
+        schema: {
+          response: {
+            200: z.array(lockSchema),
+          },
+        },
+      },
+      async (request, reply) => {
+        const locks = await options.lockService.findAll()
+        return reply.send(locks)
       }
-    }, async (request, reply) => {
-      const locks = await options.lockService.findAll()
-      return reply.send(locks)
-    })
+    )
 
-    app.get('/locks/:key', {
-      schema: {
-        params: z.object({ key: z.string() }),
-        response: {
-          200: lockSchema
-        }
+    app.get(
+      '/locks/:key',
+      {
+        schema: {
+          params: z.object({ key: z.string() }),
+          response: {
+            200: lockSchema,
+          },
+        },
+      },
+      async (request, reply) => {
+        const lock = await options.lockService.findOne(request.params.key)
+        return reply.send(lock)
       }
-    }, async (request, reply) => {
-      const lock = await options.lockService.findOne(request.params.key)
-      return reply.send(lock)
-    })
+    )
 
-    app.delete('/locks/:key', {
-      schema: {
-        params: z.object({ key: z.string() })
+    app.delete(
+      '/locks/:key',
+      {
+        schema: {
+          params: z.object({ key: z.string() }),
+        },
+      },
+      async (request, reply) => {
+        await options.lockService.remove(request.params.key)
+        return reply.send(null)
       }
-    }, async (request, reply) => {
-      await options.lockService.remove(request.params.key)
-      return reply.send(null)
-    })
+    )
   }
 }
 ```
@@ -524,6 +549,7 @@ git commit -m "feat: implement fastify routes for locks"
 ### Task 7: App Construction and Entry
 
 **Files:**
+
 - Create: `src/app.ts`
 - Create: `src/index.ts`
 - Create: `src/otel.ts`
@@ -559,9 +585,9 @@ import { DomainError } from './errors.ts'
 
 export function buildApp() {
   const config = loadConfig()
-  
+
   const app = Fastify({
-    logger: true
+    logger: true,
   })
 
   // Add Zod Compilers
@@ -575,15 +601,15 @@ export function buildApp() {
       return reply.status(error.statusCode).send({
         statusCode: error.statusCode,
         error: error.name.replace('Error', ''),
-        message: error.message
+        message: error.message,
       })
     }
-    
+
     if (error.validation) {
       return reply.status(400).send({
         statusCode: 400,
         error: 'Bad Request',
-        message: error.message
+        message: error.message,
       })
     }
 
@@ -591,7 +617,7 @@ export function buildApp() {
     return reply.status(500).send({
       statusCode: 500,
       error: 'Internal Server Error',
-      message: 'An unexpected error occurred'
+      message: 'An unexpected error occurred',
     })
   })
 
@@ -652,6 +678,7 @@ git commit -m "feat: assemble app factory and server entrypoint"
 ### Task 8: Build Verification and Cleanup
 
 **Files:**
+
 - Delete old NestJS code in `src/` (and test/ e2e config).
 
 - [ ] **Step 1: Remove old framework files**
