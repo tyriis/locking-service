@@ -11,15 +11,14 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 
-[![taskfile][taskfile-shield]][taskfile-url]
-[![pre-commit][pre-commit-shield]][pre-commit-url]
 [![renovate][renovate-shield]][renovate-url]
-[![NestJS][nestjs-shield]][nestjs-url]
+[![Fastify][fastify-shield]][fastify-url]
+[![Zod][zod-shield]][zod-url]
 [![TypeScript][typescript-shield]][typescript-url]
 
 # locking-service
 
-REST API service built with NestJS that provides distributed locking capabilities using Redis as backend.
+REST API service built with Fastify and Zod that provides distributed locking capabilities using Redis as the backend.
 
 ## User Story
 
@@ -40,66 +39,56 @@ pnpm install
 
 ## Configuration
 
-You can pass `CONFIG_PATH` env variable to point to your `configuration.yaml`. Default path is `$(XDG_CONFIG_HOME)/locking-service/configuration.yaml`
+The service is configured exclusively via environment variables (validated using Zod at startup):
 
-You can use env variables as placeholder in the configuration.yaml
-
-```yaml
----
-app:
-  port: 3000
-  host: 0.0.0.0
-
-redis:
-  host: ${env.REDIS_HOST}
-  port: 6379
-  keyPrefix: locking-service.
-  # sentinels:
-  #   - host: ${env.REDIS_HOST}
-  #     port: 26379
-  # name: redis-master
-```
+- `PORT` (default: `3000`)
+- `REDIS_URL` (default: `redis://localhost:6379`)
+- `REDIS_KEY_PREFIX` (default: `""` / empty string)
 
 ## Running the app
 
 ```bash
-# development
+# development / watch mode
+$ pnpm run dev
+
+# build for production
+$ pnpm run build
+
+# production mode (after build)
 $ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
 ```
 
 ## Test
 
 ```bash
-# unit tests
+# run tests (vitest)
 $ pnpm run test
 
-# e2e tests
-$ pnpm run test:e2e
+# watch tests
+$ pnpm run test:watch
 
 # test coverage
-$ pnpm run test:cov
+$ pnpm run test:coverage
 ```
 
-## Lint
+## Lint & Format
 
 ```bash
 # run eslint
 $ pnpm run lint
+
+# run prettier formatting
+$ pnpm run format
+
+# typecheck
+$ pnpm run typecheck
 ```
 
-[taskfile-shield]: https://img.shields.io/badge/Taskfile-enabled-brightgreen?logo=task
-[taskfile-url]: https://taskfile.dev/
-[pre-commit-shield]: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
-[pre-commit-url]: https://github.com/pre-commit/pre-commit
 [renovate-shield]: https://img.shields.io/badge/renovate-enabled-brightgreen?logo=renovate&logoColor=308BE3
 [renovate-url]: https://www.mend.io/renovate/
-[nestjs-shield]: https://img.shields.io/badge/NestJS-10.4.13-E0234E?logo=nestjs&logoColor=E0234E
-[nestjs-url]: https://nestjs.com/
-[typescript-shield]: https://img.shields.io/badge/TypeScript-5.7.2-3178C6?logo=typescript
+[fastify-shield]: https://img.shields.io/badge/Fastify-4.x-000000?logo=fastify&logoColor=white
+[fastify-url]: https://fastify.dev/
+[zod-shield]: https://img.shields.io/badge/Zod-3.x-3068b7?logo=zod&logoColor=white
+[zod-url]: https://zod.dev/
+[typescript-shield]: https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript
 [typescript-url]: https://www.typescriptlang.org/
