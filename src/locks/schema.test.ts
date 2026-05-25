@@ -20,7 +20,7 @@ describe('Lock Schemas', () => {
       owner: 'user',
       duration: '10m',
       createdAt: new Date().toISOString(),
-      expireAt: new Date(Date.now() + 600000).toISOString()
+      expireAt: new Date(Date.now() + 600000).toISOString(),
     }
     const result = lockSchema.safeParse(lock)
     expect(result.success).toBe(true)

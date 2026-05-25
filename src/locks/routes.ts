@@ -9,54 +9,71 @@ interface RouteOptions {
 }
 
 export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
+  // eslint-disable-next-line @typescript-eslint/require-await
   return async (fastify: FastifyInstance) => {
     const app = fastify.withTypeProvider<ZodTypeProvider>()
 
-    app.post('/locks', {
-      schema: {
-        body: createLockSchema,
-        response: {
-          201: lockSchema
-        }
+    app.post(
+      '/locks',
+      {
+        schema: {
+          body: createLockSchema,
+          response: {
+            201: lockSchema,
+          },
+        },
+      },
+      async (request, reply) => {
+        const lock = await options.lockService.create(request.body)
+        return reply.code(201).send(lock)
       }
-    }, async (request, reply) => {
-      const lock = await options.lockService.create(request.body)
-      return reply.code(201).send(lock)
-    })
+    )
 
-    app.get('/locks', {
-      schema: {
-        response: {
-          200: z.array(lockSchema)
-        }
+    app.get(
+      '/locks',
+      {
+        schema: {
+          response: {
+            200: z.array(lockSchema),
+          },
+        },
+      },
+      async (request, reply) => {
+        const locks = await options.lockService.findAll()
+        return reply.send(locks)
       }
-    }, async (request, reply) => {
-      const locks = await options.lockService.findAll()
-      return reply.send(locks)
-    })
+    )
 
-    app.get('/locks/:key', {
-      schema: {
-        params: z.object({ key: z.string() }),
-        response: {
-          200: lockSchema
-        }
+    app.get(
+      '/locks/:key',
+      {
+        schema: {
+          params: z.object({ key: z.string() }),
+          response: {
+            200: lockSchema,
+          },
+        },
+      },
+      async (request, reply) => {
+        const lock = await options.lockService.findOne(request.params.key)
+        return reply.send(lock)
       }
-    }, async (request, reply) => {
-      const lock = await options.lockService.findOne(request.params.key)
-      return reply.send(lock)
-    })
+    )
 
-    app.delete('/locks/:key', {
-      schema: {
-        params: z.object({ key: z.string() }),
-        response: {
-          204: z.null()
-        }
+    app.delete(
+      '/locks/:key',
+      {
+        schema: {
+          params: z.object({ key: z.string() }),
+          response: {
+            204: z.null(),
+          },
+        },
+      },
+      async (request, reply) => {
+        await options.lockService.remove(request.params.key)
+        return reply.code(204).send(null)
       }
-    }, async (request, reply) => {
-      await options.lockService.remove(request.params.key)
-      return reply.code(204).send(null)
-    })
+    )
   }
 }

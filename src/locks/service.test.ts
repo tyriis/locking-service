@@ -9,7 +9,7 @@ describe('LockService', () => {
     get: vi.fn(),
     set: vi.fn(),
     delete: vi.fn(),
-    getAll: vi.fn()
+    getAll: vi.fn(),
   } as unknown as LockRepository
 
   const service = new LockService(mockRepo, 'prefix:')
@@ -23,7 +23,9 @@ describe('LockService', () => {
 
   it('throws ConflictError if lock exists', async () => {
     vi.mocked(mockRepo.get).mockResolvedValueOnce({} as Lock)
-    await expect(service.create({ key: 'a', owner: 'b', duration: '10s' })).rejects.toThrow(ConflictError)
+    await expect(service.create({ key: 'a', owner: 'b', duration: '10s' })).rejects.toThrow(
+      ConflictError
+    )
   })
 
   it('finds one lock', async () => {

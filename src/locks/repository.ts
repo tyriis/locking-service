@@ -16,7 +16,7 @@ export class RedisLockRepository implements LockRepository {
     if (!val) return null
     try {
       return JSON.parse(val) as Lock
-    } catch (e) {
+    } catch {
       return null
     }
   }
@@ -33,23 +33,29 @@ export class RedisLockRepository implements LockRepository {
     let cursor = '0'
     const keys: string[] = []
     do {
-      const [nextCursor, elements] = await this.redis.scan(cursor, 'MATCH', `${prefix}*`, 'COUNT', 100)
+      const [nextCursor, elements] = await this.redis.scan(
+        cursor,
+        'MATCH',
+        `${prefix}*`,
+        'COUNT',
+        100
+      )
       cursor = nextCursor
       keys.push(...elements)
     } while (cursor !== '0')
 
     if (keys.length === 0) return []
-    
-    // remove prefix for internal querying if your system needs it, 
+
+    // remove prefix for internal querying if your system needs it,
     // but in vanilla ioredis you fetch with the literal key found.
     const values = await this.redis.mget(keys)
-    
+
     return values
       .filter((v: string | null): v is string => v !== null)
       .map((v: string) => {
         try {
           return JSON.parse(v) as Lock
-        } catch (e) {
+        } catch {
           return null
         }
       })

@@ -3,7 +3,7 @@ import { buildApp } from './app.js'
 
 const { app, config } = buildApp()
 
-const start = async () => {
+const start = async (): Promise<void> => {
   try {
     const port = config.PORT
     await app.listen({ port, host: '0.0.0.0' })
@@ -13,7 +13,7 @@ const start = async () => {
   }
 }
 
-const gracefulShutdown = async () => {
+const gracefulShutdown = async (): Promise<void> => {
   app.log.info('Graceful shutdown signal received')
   await app.close()
   await sdk.shutdown()

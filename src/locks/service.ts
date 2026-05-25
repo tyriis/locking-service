@@ -24,7 +24,7 @@ export class LockService {
       owner: input.owner,
       duration: input.duration,
       createdAt: createdAt.toISOString(),
-      expireAt: expireAt.toISOString()
+      expireAt: expireAt.toISOString(),
     }
 
     await this.repo.set(input.key, lock, durationSeconds)

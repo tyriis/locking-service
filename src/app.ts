@@ -1,17 +1,17 @@
-import Fastify from 'fastify'
+import Fastify, { FastifyInstance, FastifyError } from 'fastify'
 import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
 import { Redis } from 'ioredis'
-import { loadConfig } from './config.js'
+import { loadConfig, Config } from './config.js'
 import { RedisLockRepository } from './locks/repository.js'
 import { LockService } from './locks/service.js'
 import { lockRoutes } from './locks/routes.js'
 import { DomainError } from './errors.js'
 
-export function buildApp() {
+export function buildApp(): { app: FastifyInstance; config: Config } {
   const config = loadConfig()
-  
+
   const app = Fastify({
-    logger: true
+    logger: true,
   })
 
   // Add Zod Compilers
@@ -19,21 +19,21 @@ export function buildApp() {
   app.setSerializerCompiler(serializerCompiler)
 
   // Error Handler
-  app.setErrorHandler((error: any, request, reply) => {
+  app.setErrorHandler((error: FastifyError, _request, reply) => {
     if (error instanceof DomainError) {
       app.log.warn(error)
       return reply.status(error.statusCode).send({
         statusCode: error.statusCode,
         error: error.name.replace('Error', ''),
-        message: error.message
+        message: error.message,
       })
     }
-    
+
     if (error.validation) {
       return reply.status(400).send({
         statusCode: 400,
         error: 'Bad Request',
-        message: error.message
+        message: error.message,
       })
     }
 
@@ -41,7 +41,7 @@ export function buildApp() {
     return reply.status(500).send({
       statusCode: 500,
       error: 'Internal Server Error',
-      message: 'An unexpected error occurred'
+      message: 'An unexpected error occurred',
     })
   })
 
@@ -51,7 +51,7 @@ export function buildApp() {
 
   app.register(lockRoutes({ lockService }))
 
-  app.addHook('onClose', async (instance) => {
+  app.addHook('onClose', async (_instance) => {
     await redis.quit()
   })
 
