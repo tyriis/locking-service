@@ -45,9 +45,9 @@ export function buildApp(): { app: FastifyInstance; config: Config } {
     })
   })
 
-  const redis = new Redis(config.REDIS_URL)
+  const redis = new Redis(config.redis)
   const lockRepo = new RedisLockRepository(redis)
-  const lockService = new LockService(lockRepo, config.REDIS_KEY_PREFIX)
+  const lockService = new LockService(lockRepo, config.redis.keyPrefix)
 
   app.register(lockRoutes({ lockService }))
 
