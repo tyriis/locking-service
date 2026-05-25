@@ -4,20 +4,20 @@ export class DomainError extends Error {
     public statusCode: number
   ) {
     super(message)
-    this.name = 'DomainError'
+    this.name = "DomainError"
   }
 }
 
 export class ConflictError extends DomainError {
   constructor(message: string) {
     super(message, 409)
-    this.name = 'ConflictError'
+    this.name = "ConflictError"
   }
 }
 
 export class NotFoundError extends DomainError {
   constructor(message: string) {
     super(message, 404)
-    this.name = 'NotFoundError'
+    this.name = "NotFoundError"
   }
 }

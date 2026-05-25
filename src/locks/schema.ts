@@ -1,9 +1,9 @@
-import { z } from 'zod'
+import { z } from "zod"
 
 export const createLockSchema = z.object({
-  key: z.string().min(1, 'Key is required'),
-  owner: z.string().min(1, 'Owner is required'),
-  duration: z.string().min(1, 'Duration is required'),
+  key: z.string().min(1, "Key is required"),
+  owner: z.string().min(1, "Owner is required"),
+  duration: z.string().min(1, "Duration is required"),
 })
 
 export type CreateLockInput = z.infer<typeof createLockSchema>

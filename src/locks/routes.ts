@@ -1,8 +1,8 @@
-import { FastifyInstance, FastifyPluginAsync } from 'fastify'
-import { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { z } from 'zod'
-import { LockService } from './service.js'
-import { createLockSchema, lockSchema } from './schema.js'
+import { FastifyInstance, FastifyPluginAsync } from "fastify"
+import { ZodTypeProvider } from "fastify-type-provider-zod"
+import { z } from "zod"
+import { LockService } from "./service.js"
+import { createLockSchema, lockSchema } from "./schema.js"
 
 interface RouteOptions {
   lockService: LockService
@@ -14,7 +14,7 @@ export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
     const app = fastify.withTypeProvider<ZodTypeProvider>()
 
     app.post(
-      '/locks',
+      "/locks",
       {
         schema: {
           body: createLockSchema,
@@ -30,7 +30,7 @@ export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
     )
 
     app.get(
-      '/locks',
+      "/locks",
       {
         schema: {
           response: {
@@ -45,7 +45,7 @@ export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
     )
 
     app.get(
-      '/locks/:key',
+      "/locks/:key",
       {
         schema: {
           params: z.object({ key: z.string() }),
@@ -61,7 +61,7 @@ export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
     )
 
     app.delete(
-      '/locks/:key',
+      "/locks/:key",
       {
         schema: {
           params: z.object({ key: z.string() }),

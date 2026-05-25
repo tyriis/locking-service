@@ -1,5 +1,5 @@
-import { Redis } from 'ioredis'
-import { Lock } from './schema.js'
+import { Redis } from "ioredis"
+import { Lock } from "./schema.js"
 
 export interface LockRepository {
   get(key: string): Promise<Lock | null>
@@ -22,27 +22,27 @@ export class RedisLockRepository implements LockRepository {
   }
 
   async set(key: string, lock: Lock, durationSeconds: number): Promise<void> {
-    await this.redis.set(key, JSON.stringify(lock), 'EX', durationSeconds)
+    await this.redis.set(key, JSON.stringify(lock), "EX", durationSeconds)
   }
 
   async delete(key: string): Promise<void> {
     await this.redis.del(key)
   }
 
-  async getAll(prefix: string = ''): Promise<Lock[]> {
-    let cursor = '0'
+  async getAll(prefix: string = ""): Promise<Lock[]> {
+    let cursor = "0"
     const keys: string[] = []
     do {
       const [nextCursor, elements] = await this.redis.scan(
         cursor,
-        'MATCH',
+        "MATCH",
         `${prefix}*`,
-        'COUNT',
+        "COUNT",
         100
       )
       cursor = nextCursor
       keys.push(...elements)
-    } while (cursor !== '0')
+    } while (cursor !== "0")
 
     if (keys.length === 0) return []
 

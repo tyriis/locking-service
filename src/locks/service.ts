@@ -1,12 +1,12 @@
-import timestring from 'timestring'
-import { LockRepository } from './repository.js'
-import { CreateLockInput, Lock } from './schema.js'
-import { ConflictError, NotFoundError } from '../errors.js'
+import timestring from "timestring"
+import { LockRepository } from "./repository.js"
+import { CreateLockInput, Lock } from "./schema.js"
+import { ConflictError, NotFoundError } from "../errors.js"
 
 export class LockService {
   constructor(
     private readonly repo: LockRepository,
-    private readonly keyPrefix: string = ''
+    private readonly keyPrefix: string = ""
   ) {}
 
   async create(input: CreateLockInput): Promise<Lock> {

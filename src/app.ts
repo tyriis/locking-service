@@ -1,11 +1,11 @@
-import Fastify, { FastifyInstance, FastifyError } from 'fastify'
-import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
-import { Redis } from 'ioredis'
-import { loadConfig, Config } from './config.js'
-import { RedisLockRepository } from './locks/repository.js'
-import { LockService } from './locks/service.js'
-import { lockRoutes } from './locks/routes.js'
-import { DomainError } from './errors.js'
+import Fastify, { FastifyInstance, FastifyError } from "fastify"
+import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod"
+import { Redis } from "ioredis"
+import { loadConfig, Config } from "./config.js"
+import { RedisLockRepository } from "./locks/repository.js"
+import { LockService } from "./locks/service.js"
+import { lockRoutes } from "./locks/routes.js"
+import { DomainError } from "./errors.js"
 
 export function buildApp(): { app: FastifyInstance; config: Config } {
   const config = loadConfig()
@@ -24,7 +24,7 @@ export function buildApp(): { app: FastifyInstance; config: Config } {
       app.log.warn(error)
       return reply.status(error.statusCode).send({
         statusCode: error.statusCode,
-        error: error.name.replace('Error', ''),
+        error: error.name.replace("Error", ""),
         message: error.message,
       })
     }
@@ -32,7 +32,7 @@ export function buildApp(): { app: FastifyInstance; config: Config } {
     if (error.validation) {
       return reply.status(400).send({
         statusCode: 400,
-        error: 'Bad Request',
+        error: "Bad Request",
         message: error.message,
       })
     }
@@ -40,8 +40,8 @@ export function buildApp(): { app: FastifyInstance; config: Config } {
     app.log.error(error)
     return reply.status(500).send({
       statusCode: 500,
-      error: 'Internal Server Error',
-      message: 'An unexpected error occurred',
+      error: "Internal Server Error",
+      message: "An unexpected error occurred",
     })
   })
 
@@ -51,7 +51,7 @@ export function buildApp(): { app: FastifyInstance; config: Config } {
 
   app.register(lockRoutes({ lockService }))
 
-  app.addHook('onClose', async (_instance) => {
+  app.addHook("onClose", async (_instance) => {
     await redis.quit()
   })
 

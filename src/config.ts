@@ -1,9 +1,9 @@
-import { z } from 'zod'
+import { z } from "zod"
 
 export const configSchema = z.object({
   PORT: z.coerce.number().default(3000),
-  REDIS_URL: z.string().url().default('redis://localhost:6379'),
-  REDIS_KEY_PREFIX: z.string().default(''),
+  REDIS_URL: z.string().url().default("redis://localhost:6379"),
+  REDIS_KEY_PREFIX: z.string().default(""),
 })
 
 export type Config = z.infer<typeof configSchema>
