@@ -4,7 +4,7 @@ const require = createRequire(import.meta.url)
 
 const tseslint = require("@typescript-eslint/eslint-plugin")
 const tsParser = require("@typescript-eslint/parser")
-import prettierConfig from "eslint-config-prettier"
+const prettierConfig = require("eslint-config-prettier")
 
 export default [
   {
