@@ -29,6 +29,12 @@ export default [
     },
   },
   {
+    files: ["src/**/*.test.ts"],
+    rules: {
+      "@typescript-eslint/unbound-method": "off",
+    },
+  },
+  {
     ignores: [
       "dist/**",
       "node_modules/**",
