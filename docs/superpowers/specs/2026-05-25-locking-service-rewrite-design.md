@@ -2,7 +2,9 @@
 
 ## 1. Overview
 
-A cleanroom rewrite of the `locking-service` transitioning from a NestJS foundation to a lightweight Fastify + Zod stack. The rewrite adopts "Pragmatic Vertical Slices" architecture, aiming for clear boundaries, simple dependency injection, and excellent testability, mirroring the core setup of the `agent-test` project.
+A cleanroom rewrite of the `locking-service` transitioning from a NestJS foundation to a lightweight Fastify + Zod stack.
+The rewrite adopts "Pragmatic Vertical Slices" architecture, aiming for clear boundaries, simple dependency injection,
+and excellent testability, mirroring the core setup of the `agent-test` project.
 
 ## 2. Project Structure
 
@@ -38,7 +40,9 @@ To avoid heavy DI frameworks, the application will use manual dependency injecti
 
 ## 5. Error Handling
 
-The domain will define custom error classes (e.g., `ConflictError`, `NotFoundError`) that `LockService` will throw. Fastify's `setErrorHandler` (configured in `app.ts`) will catch these domain errors and map them to standard HTTP responses (409 Conflict, 404 Not Found), preserving exact parity with the original NestJS API responses.
+The domain will define custom error classes (e.g., `ConflictError`, `NotFoundError`) that `LockService` will throw.
+Fastify's `setErrorHandler` (configured in `app.ts`) will catch these domain errors and map them to standard HTTP responses
+(409 Conflict, 404 Not Found), preserving exact parity with the original NestJS API responses.
 
 ## 6. Testing Strategy
 

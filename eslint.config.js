@@ -1,6 +1,9 @@
 // @ts-check
-import tseslint from '@typescript-eslint/eslint-plugin'
-import tsParser from '@typescript-eslint/parser'
+import { createRequire } from 'node:module'
+const require = createRequire(import.meta.url)
+
+const tseslint = require('@typescript-eslint/eslint-plugin')
+const tsParser = require('@typescript-eslint/parser')
 import prettierConfig from 'eslint-config-prettier'
 
 export default [
