@@ -10,7 +10,7 @@
 
 ---
 
-## Task 1: Scaffolding & Initial Setup
+### Task 1: Scaffolding & Initial Setup
 
 **Files:**
 
@@ -136,7 +136,7 @@ git add package.json pnpm-lock.yaml tsconfig.json vitest.config.ts src/config.ts
 git commit -m "chore: scaffold project structure and config"
 ```
 
-## Task 2: Domain Schema (Zod)
+### Task 2: Domain Schema (Zod)
 
 **Files:**
 
@@ -221,7 +221,7 @@ git add src/locks/schema.ts src/locks/schema.test.ts
 git commit -m "feat: define domain schemas using zod"
 ```
 
-## Task 3: Error Classes
+### Task 3: Error Classes
 
 **Files:**
 
@@ -264,7 +264,7 @@ git add src/errors.ts
 git commit -m "feat: add domain error classes"
 ```
 
-## Task 4: Repository Layer
+### Task 4: Repository Layer
 
 **Files:**
 
@@ -322,7 +322,7 @@ git add src/locks/repository.ts
 git commit -m "feat: implement RedisLockRepository"
 ```
 
-## Task 5: Service Layer
+### Task 5: Service Layer
 
 **Files:**
 
@@ -451,7 +451,7 @@ git add src/locks/service.ts src/locks/service.test.ts
 git commit -m "feat: implement LockService with tests"
 ```
 
-## Task 6: Fastify Routes
+### Task 6: Fastify Routes
 
 **Files:**
 
@@ -546,7 +546,7 @@ git add src/locks/routes.ts
 git commit -m "feat: implement fastify routes for locks"
 ```
 
-## Task 7: App Construction and Entry
+### Task 7: App Construction and Entry
 
 **Files:**
 
@@ -675,7 +675,7 @@ git add src/app.ts src/index.ts src/otel.ts
 git commit -m "feat: assemble app factory and server entrypoint"
 ```
 
-## Task 8: Build Verification and Cleanup
+### Task 8: Build Verification and Cleanup
 
 **Files:**
 

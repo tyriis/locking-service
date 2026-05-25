@@ -12,7 +12,7 @@ ENABLE_LINTERS:
   - SPELL_MISSPELL
   - SPELL_PROSELINT
   - JAVASCRIPT_ES
-FILTER_REGEX_EXCLUDE: (\.envrc|\.git/*|node_modules/*|dist/*)
+FILTER_REGEX_EXCLUDE: (\.envrc|\.git/*|node_modules/*|dist/*|docs/superpowers/*)
 MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.yaml
 YAML_YAMLLINT_CONFIG_FILE: .yamllint.yaml
 YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: (pnpm-lock\.yaml)
