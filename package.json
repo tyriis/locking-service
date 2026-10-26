@@ -35,28 +35,28 @@
     "@types/timestring": "7.0.0",
     "@typescript-eslint/eslint-plugin": "8.72.0",
     "@typescript-eslint/parser": "8.72.0",
-    "@vitest/coverage-v8": "^5.0.5",
+    "@vitest/coverage-v8": "5.0.5",
     "eslint": "10.13.0",
     "eslint-config-prettier": "10.1.8",
     "lefthook": "2.2.2",
     "prettier": "3.9.10",
-    "tsx": "^4.22.3",
+    "tsx": "4.22.3",
     "typescript": "6.0.3",
-    "vitest": "^5.0.5"
+    "vitest": "5.0.5"
   },
   "dependencies": {
-    "@fastify/etag": "^6.2.1",
-    "@fastify/otel": "^0.21.3",
-    "@fastify/swagger": "^9.9.2",
-    "@fastify/swagger-ui": "^6.1.2",
-    "@opentelemetry/api": "^1.10.0",
-    "@opentelemetry/instrumentation-http": "^0.300.0",
-    "@opentelemetry/sdk-node": "^0.300.0",
-    "fastify": "^5.12.7",
-    "fastify-type-provider-zod": "^7.0.0",
-    "ioredis": "^6.0.0",
-    "timestring": "^7.0.0",
+    "@fastify/etag": "6.2.1",
+    "@fastify/otel": "0.21.3",
+    "@fastify/swagger": "9.9.2",
+    "@fastify/swagger-ui": "6.1.2",
+    "@opentelemetry/api": "1.10.0",
+    "@opentelemetry/instrumentation-http": "0.300.0",
+    "@opentelemetry/sdk-node": "0.300.0",
+    "fastify": "5.12.7",
+    "fastify-type-provider-zod": "7.0.0",
+    "ioredis": "6.0.0",
+    "timestring": "7.0.0",
     "yaml": "2.9.1",
-    "zod": "^4.6.7"
+    "zod": "4.6.7"
   }
 }
