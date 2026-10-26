@@ -31,7 +31,7 @@
     "pnpm": ">=12.0.0"
   },
   "devDependencies": {
-    "@types/node": "22.0.0",
+    "@types/node": "22.20.5",
     "@types/timestring": "7.0.0",
     "@typescript-eslint/eslint-plugin": "8.59.4",
     "@typescript-eslint/parser": "8.59.4",
