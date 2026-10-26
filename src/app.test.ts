@@ -104,7 +104,7 @@ describe("contract: app endpoints", () => {
     expectExact(res, {
       statusCode: 200,
       contentType: json,
-      body: '{\n  "service": "locking-service",\n  "version": "0.1.1"\n}',
+      body: '{\n  "service": "locking-service",\n  "version": "0.2.0"\n}',
     })
   })
 
@@ -639,6 +639,6 @@ describe("contract: etag", () => {
       headers: { "if-none-match": 'W/"stale"' },
     })
     expect(res.statusCode).toBe(200)
-    expect(res.body).toBe('{\n  "service": "locking-service",\n  "version": "0.1.1"\n}')
+    expect(res.body).toBe('{\n  "service": "locking-service",\n  "version": "0.2.0"\n}')
   })
 })
