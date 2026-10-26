@@ -39,7 +39,7 @@
     "eslint": "10.13.0",
     "eslint-config-prettier": "10.1.8",
     "lefthook": "2.2.2",
-    "prettier": "3.8.3",
+    "prettier": "3.9.10",
     "tsx": "^4.22.3",
     "typescript": "6.0.3",
     "vitest": "^5.0.5"
