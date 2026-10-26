@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/evilmartians/lefthook/master/schema.json
+pre-commit:
+  parallel: false
+  commands:
+    format:
+      # --ignore-unknown: Dockerfile/.nvmrc and friends have no prettier parser
+      run: pnpm exec prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true
+    lint:
+      glob: src/**/*.ts
+      run: pnpm exec eslint --fix {staged_files}
+      stage_fixed: true
+    test:
+      glob: src/**/*.ts
+      run: pnpm test
+
+pre-push:
+  parallel: false
+  commands:
+    typecheck:
+      run: pnpm typecheck
+    test-coverage:
+      run: pnpm test:coverage
