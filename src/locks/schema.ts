@@ -28,8 +28,8 @@ export const lockSchema = z.object({
   key: z.string().describe("The lock key/identifier"),
   owner: z.string().describe("The owner of the lock"),
   duration: z.number().describe("The lock duration in seconds"),
-  createdAt: z.string().datetime().describe("The lock creation as Date string"),
-  expireAt: z.string().datetime().describe("The lock expire as Date string"),
+  createdAt: z.iso.datetime().describe("The lock creation as Date string"),
+  expireAt: z.iso.datetime().describe("The lock expire as Date string"),
 })
 
 export type Lock = z.infer<typeof lockSchema>
