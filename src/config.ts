@@ -55,7 +55,7 @@ const appConfigSchema = z
   .strict()
 
 export const configSchema = z.object({
-  app: appConfigSchema.default({}),
+  app: appConfigSchema.prefault({}),
   redis: redisConfigSchema,
 })
 
@@ -63,9 +63,7 @@ export type Config = z.infer<typeof configSchema>
 
 export const envSchema = z.object({
   NODE_ENV: z.enum(NODE_ENVS, {
-    errorMap: () => ({
-      message: `"NODE_ENV" must be one of [${NODE_ENVS.join(", ")}]`,
-    }),
+    error: `"NODE_ENV" must be one of [${NODE_ENVS.join(", ")}]`,
   }),
   CONFIG_PATH: z.string().optional(),
 })
