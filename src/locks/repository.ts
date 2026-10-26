@@ -1,24 +1,37 @@
-import { Redis } from "ioredis"
 import { Lock } from "./schema.js"
+
+/**
+ * The subset of the ioredis client used by the repository. Declared
+ * structurally so tests can substitute an in-memory fake.
+ */
+export interface RedisClient {
+  get(key: string): Promise<string | null>
+  set(key: string, value: string, expiryMode: "EX", ttl: number): Promise<unknown>
+  del(key: string): Promise<unknown>
+  scan(
+    cursor: string,
+    matchKeyword: "MATCH",
+    pattern: string,
+    countKeyword: "COUNT",
+    count: number
+  ): Promise<[string, string[]]>
+  mget(keys: string[]): Promise<(string | null)[]>
+}
 
 export interface LockRepository {
   get(key: string): Promise<Lock | null>
   set(key: string, lock: Lock, durationSeconds: number): Promise<void>
   delete(key: string): Promise<void>
-  getAll(prefix: string): Promise<Lock[]>
+  getAll(prefix?: string): Promise<Lock[]>
 }
 
 export class RedisLockRepository implements LockRepository {
-  constructor(private readonly redis: Redis) {}
+  constructor(private readonly redis: RedisClient) {}
 
   async get(key: string): Promise<Lock | null> {
     const val = await this.redis.get(key)
     if (!val) return null
-    try {
-      return JSON.parse(val) as Lock
-    } catch {
-      return null
-    }
+    return JSON.parse(val) as Lock
   }
 
   async set(key: string, lock: Lock, durationSeconds: number): Promise<void> {
@@ -46,19 +59,12 @@ export class RedisLockRepository implements LockRepository {
 
     if (keys.length === 0) return []
 
-    // remove prefix for internal querying if your system needs it,
-    // but in vanilla ioredis you fetch with the literal key found.
-    const values = await this.redis.mget(keys)
+    // ioredis prepends `keyPrefix` to get/set/del/mget but NOT to the keys
+    // returned by SCAN, so the prefix has to be stripped before fetching.
+    const values = await this.redis.mget(keys.map((key) => key.replace(prefix, "")))
 
     return values
-      .filter((v: string | null): v is string => v !== null)
-      .map((v: string) => {
-        try {
-          return JSON.parse(v) as Lock
-        } catch {
-          return null
-        }
-      })
-      .filter((v: Lock | null): v is Lock => v !== null)
+      .filter((value: string | null): value is string => value !== null)
+      .map((value: string) => JSON.parse(value) as Lock)
   }
 }

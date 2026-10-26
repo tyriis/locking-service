@@ -16,7 +16,13 @@ const start = async (): Promise<void> => {
 const gracefulShutdown = async (): Promise<void> => {
   app.log.info("Graceful shutdown signal received")
   await app.close()
-  await sdk.shutdown()
+  try {
+    await sdk.shutdown()
+  } catch (error) {
+    // The OTLP exporter is unavailable in most deployments; a failed flush
+    // must not turn a controlled shutdown into a crash.
+    app.log.warn({ err: error }, "OpenTelemetry shutdown failed")
+  }
   process.exit(0)
 }
 

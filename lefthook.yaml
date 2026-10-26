@@ -4,7 +4,8 @@ pre-commit:
   parallel: false
   commands:
     format:
-      run: pnpm exec prettier --write {staged_files}
+      # --ignore-unknown: Dockerfile/.nvmrc and friends have no prettier parser
+      run: pnpm exec prettier --write --ignore-unknown {staged_files}
       stage_fixed: true
     lint:
       glob: src/**/*.ts

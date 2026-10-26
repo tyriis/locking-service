@@ -15,19 +15,19 @@ export class LockService {
       throw new ConflictError(`lock '${input.key}' already aquired`)
     }
 
-    const durationSeconds = timestring(input.duration)
+    const duration = timestring(input.duration)
     const createdAt = new Date()
-    const expireAt = new Date(createdAt.getTime() + durationSeconds * 1000)
+    const expireAt = new Date(createdAt.getTime() + duration * 1000)
 
     const lock: Lock = {
       key: input.key,
       owner: input.owner,
-      duration: input.duration,
+      duration,
       createdAt: createdAt.toISOString(),
       expireAt: expireAt.toISOString(),
     }
 
-    await this.repo.set(input.key, lock, durationSeconds)
+    await this.repo.set(input.key, lock, duration)
     return lock
   }
 

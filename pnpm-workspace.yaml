@@ -1,0 +1,6 @@
+---
+allowBuilds:
+  esbuild: true
+  lefthook: true
+  # protobufjs' postinstall only prints a funding banner and fails here.
+  protobufjs: false

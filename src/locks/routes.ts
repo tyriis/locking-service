@@ -8,6 +8,8 @@ interface RouteOptions {
   lockService: LockService
 }
 
+const keyParamsSchema = z.object({ key: z.string() })
+
 export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
   // eslint-disable-next-line @typescript-eslint/require-await
   return async (fastify: FastifyInstance) => {
@@ -17,6 +19,8 @@ export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
       "/locks",
       {
         schema: {
+          summary: "Create a new lock",
+          tags: ["locks"],
           body: createLockSchema,
           response: {
             201: lockSchema,
@@ -33,12 +37,14 @@ export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
       "/locks",
       {
         schema: {
+          summary: "Retrieve all active locks",
+          tags: ["locks"],
           response: {
             200: z.array(lockSchema),
           },
         },
       },
-      async (request, reply) => {
+      async (_request, reply) => {
         const locks = await options.lockService.findAll()
         return reply.send(locks)
       }
@@ -48,7 +54,9 @@ export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
       "/locks/:key",
       {
         schema: {
-          params: z.object({ key: z.string() }),
+          summary: "Retrieve an active lock by its `key`",
+          tags: ["locks"],
+          params: keyParamsSchema,
           response: {
             200: lockSchema,
           },
@@ -60,19 +68,20 @@ export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
       }
     )
 
+    // The previous implementation answered 200 with an empty body and no
+    // content-type header, whether or not the lock existed.
     app.delete(
       "/locks/:key",
       {
         schema: {
-          params: z.object({ key: z.string() }),
-          response: {
-            204: z.null(),
-          },
+          summary: "Remove an existing lock by its `key`",
+          tags: ["locks"],
+          params: keyParamsSchema,
         },
       },
       async (request, reply) => {
         await options.lockService.remove(request.params.key)
-        return reply.code(204).send(null)
+        return reply.code(200).send()
       }
     )
   }

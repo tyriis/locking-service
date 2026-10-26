@@ -18,7 +18,7 @@ describe("Lock Schemas", () => {
     const lock = {
       key: "test",
       owner: "user",
-      duration: "10m",
+      duration: 600,
       createdAt: new Date().toISOString(),
       expireAt: new Date(Date.now() + 600000).toISOString(),
     }

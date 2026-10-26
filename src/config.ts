@@ -1,21 +1,35 @@
-import { z } from "zod"
 import fs from "node:fs"
 import os from "node:os"
 import YAML from "yaml"
+import { z } from "zod"
 
-const redisSentinelSchema = z.object({
-  host: z.string(),
-  port: z.number().int().default(26379),
-})
+export const NODE_ENVS = ["development", "production", "test"] as const
+
+const portSchema = z.coerce.number().int().min(0).max(65535)
+
+// YAML may hand us booleans already; quoted values are coerced like Joi did.
+const booleanSchema = z.preprocess((value) => {
+  if (value === "true") return true
+  if (value === "false") return false
+  return value
+}, z.boolean())
+
+const redisSentinelSchema = z
+  .object({
+    host: z.string(),
+    port: portSchema.default(26379),
+  })
+  .strict()
 
 const redisConfigSchema = z
   .object({
     host: z.string().optional(),
-    port: z.number().int().optional(),
-    keyPrefix: z.string().optional().default(""),
+    port: portSchema.optional(),
+    keyPrefix: z.string().default(""),
     sentinels: z.array(redisSentinelSchema).optional(),
     name: z.string().optional(),
   })
+  .strict()
   .refine(
     (data) => {
       const hasHost = !!data.host
@@ -32,61 +46,89 @@ const redisConfigSchema = z
     }
   )
 
+const appConfigSchema = z
+  .object({
+    host: z.string().default("127.0.0.1"),
+    port: portSchema.default(3000),
+    pretty: booleanSchema.default(false),
+  })
+  .strict()
+
 export const configSchema = z.object({
-  app: z
-    .object({
-      host: z.string().default("0.0.0.0"),
-      port: z.number().int().default(3000),
-      pretty: z.boolean().default(false),
-    })
-    .default({}),
+  app: appConfigSchema.default({}),
   redis: redisConfigSchema,
 })
 
 export type Config = z.infer<typeof configSchema>
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const replaceEnvVars = (value: any): any => {
+export const envSchema = z.object({
+  NODE_ENV: z.enum(NODE_ENVS, {
+    errorMap: () => ({
+      message: `"NODE_ENV" must be one of [${NODE_ENVS.join(", ")}]`,
+    }),
+  }),
+  CONFIG_PATH: z.string().optional(),
+})
+
+const formatIssues = (issues: z.ZodIssue[]): string =>
+  issues
+    .map((issue) => {
+      const path = issue.path.join(".")
+      return path ? `${path}: ${issue.message}` : issue.message
+    })
+    .join(", ")
+
+/**
+ * Replace every `${env.VAR}` placeholder with the matching environment variable.
+ * Mirrors the loader of the previous implementation: a missing or empty variable
+ * is a hard error.
+ */
+export const replaceEnvVars = (value: unknown): unknown => {
   if (typeof value === "string") {
-    const envRegex = /\${env\.(.*?)}/g
-    return value.replace(envRegex, (_, envVar): string => {
-      const env = process.env[envVar as string]
+    return value.replace(/\$\{env\.(.*?)}/g, (_match, envVar: string): string => {
+      const env = process.env[envVar]
       if (!env) {
         throw new Error(`Environment variable ${envVar} is not set!`)
       }
       return env
     })
-  } else if (typeof value === "object" && value !== null) {
-    for (const key in value) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      value[key] = replaceEnvVars(value[key])
-    }
   }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => replaceEnvVars(item))
+  }
+
+  if (typeof value === "object" && value !== null) {
+    const result: Record<string, unknown> = {}
+    for (const [key, nested] of Object.entries(value)) {
+      result[key] = replaceEnvVars(nested)
+    }
+    return result
+  }
+
   return value
 }
 
 export function loadConfig(): Config {
-  const xdgConfig: string = process.env.XDG_CONFIG_HOME ?? `${os.homedir()}/.config`
-  const CONFIG_PATH: string =
-    process.env.CONFIG_PATH ?? `${xdgConfig}/locking-service/configuration.yaml`
-
-  if (!fs.existsSync(CONFIG_PATH)) {
-    // If we're testing or the file isn't explicitly defined, try falling back to environment variables
-    // But since the original threw an error if the file was missing, let's stick to that unless we're in test env
-    if (process.env.NODE_ENV !== "test") {
-      throw new Error(`${CONFIG_PATH} is not a file! Please create it or set CONFIG_PATH.`)
-    } else {
-      // In tests, provide a dummy config
-      return configSchema.parse({
-        app: { port: 3000, host: "127.0.0.1" },
-        redis: { host: "127.0.0.1", port: 6379, keyPrefix: "test." },
-      })
-    }
+  const env = envSchema.safeParse(process.env)
+  if (!env.success) {
+    throw new Error(`Config validation error: ${formatIssues(env.error.issues)}`)
   }
 
-  const rawConfig = YAML.parse(fs.readFileSync(CONFIG_PATH, "utf8")) as Record<string, unknown>
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const xdgConfig = process.env.XDG_CONFIG_HOME ?? `${os.homedir()}/.config`
+  const CONFIG_PATH = env.data.CONFIG_PATH ?? `${xdgConfig}/locking-service/configuration.yaml`
+
+  if (!fs.existsSync(CONFIG_PATH)) {
+    throw new Error(`${CONFIG_PATH} is not a file! Please create it or set CONFIG_PATH.`)
+  }
+
+  const rawConfig: unknown = YAML.parse(fs.readFileSync(CONFIG_PATH, "utf8"))
   const configWithEnv = replaceEnvVars(rawConfig)
 
-  return configSchema.parse(configWithEnv)
+  const result = configSchema.safeParse(configWithEnv)
+  if (!result.success) {
+    throw new Error(`Config validation error: ${formatIssues(result.error.issues)}`)
+  }
+
+  return result.data
 }

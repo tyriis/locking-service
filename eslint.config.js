@@ -1,10 +1,7 @@
 // @ts-check
-import { createRequire } from "node:module"
-const require = createRequire(import.meta.url)
-
-const tseslint = require("@typescript-eslint/eslint-plugin")
-const tsParser = require("@typescript-eslint/parser")
-const prettierConfig = require("eslint-config-prettier")
+import tseslint from "@typescript-eslint/eslint-plugin"
+import tsParser from "@typescript-eslint/parser"
+import prettierConfig from "eslint-config-prettier"
 
 export default [
   {
@@ -29,15 +26,10 @@ export default [
     },
   },
   {
-    files: ["src/**/*.test.ts"],
-    rules: {
-      "@typescript-eslint/unbound-method": "off",
-    },
-  },
-  {
     ignores: [
       "dist/**",
       "node_modules/**",
+      "coverage/**",
       "*.config.js",
       "*.config.ts",
       "src/**/*.test.ts",

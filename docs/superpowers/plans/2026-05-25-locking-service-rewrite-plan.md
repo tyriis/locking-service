@@ -10,6 +10,8 @@
 
 ---
 
+## Tasks
+
 ### Task 1: Scaffolding & Initial Setup
 
 **Files:**
@@ -19,7 +21,7 @@
 - Create: `vitest.config.ts`
 - Create: `src/config.ts`
 
-- [ ] **Step 1: Write `package.json` and install dependencies**
+- [x] **Step 1: Write `package.json` and install dependencies**
 
 ```bash
 cat << 'EOF' > package.json
@@ -73,7 +75,7 @@ EOF
 pnpm install
 ```
 
-- [ ] **Step 2: Write `tsconfig.json` and `vitest.config.ts`**
+- [x] **Step 2: Write `tsconfig.json` and `vitest.config.ts`**
 
 ```bash
 cat << 'EOF' > tsconfig.json
@@ -109,7 +111,7 @@ export default defineConfig({
 EOF
 ```
 
-- [ ] **Step 3: Write configuration schema**
+- [x] **Step 3: Write configuration schema**
 
 Create `src/config.ts`:
 
@@ -129,7 +131,7 @@ export function loadConfig(): Config {
 }
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add package.json pnpm-lock.yaml tsconfig.json vitest.config.ts src/config.ts
@@ -143,7 +145,7 @@ git commit -m "chore: scaffold project structure and config"
 - Create: `src/locks/schema.ts`
 - Create: `src/locks/schema.test.ts`
 
-- [ ] **Step 1: Write the tests**
+- [x] **Step 1: Write the tests**
 
 Create `src/locks/schema.test.ts`:
 
@@ -178,12 +180,12 @@ describe('Lock Schemas', () => {
 })
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `pnpm test src/locks/schema.test.ts`
 Expected: FAIL due to missing schema file.
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 Create `src/locks/schema.ts`:
 
@@ -209,12 +211,12 @@ export const lockSchema = z.object({
 export type Lock = z.infer<typeof lockSchema>
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `pnpm test src/locks/schema.test.ts`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/locks/schema.ts src/locks/schema.test.ts
@@ -227,7 +229,7 @@ git commit -m "feat: define domain schemas using zod"
 
 - Create: `src/errors.ts`
 
-- [ ] **Step 1: Write error classes implementation**
+- [x] **Step 1: Write error classes implementation**
 
 Create `src/errors.ts`:
 
@@ -257,7 +259,7 @@ export class NotFoundError extends DomainError {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/errors.ts
@@ -270,7 +272,7 @@ git commit -m "feat: add domain error classes"
 
 - Create: `src/locks/repository.ts`
 
-- [ ] **Step 1: Write Repository Implementation**
+- [x] **Step 1: Write Repository Implementation**
 
 Create `src/locks/repository.ts`:
 
@@ -315,7 +317,7 @@ export class RedisLockRepository implements LockRepository {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/locks/repository.ts
@@ -329,7 +331,7 @@ git commit -m "feat: implement RedisLockRepository"
 - Create: `src/locks/service.test.ts`
 - Create: `src/locks/service.ts`
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `src/locks/service.test.ts`:
 
@@ -377,12 +379,12 @@ describe('LockService', () => {
 })
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `pnpm test src/locks/service.test.ts`
 Expected: FAIL due to missing service file.
 
-- [ ] **Step 3: Write implementation**
+- [x] **Step 3: Write implementation**
 
 Create `src/locks/service.ts`:
 
@@ -439,12 +441,12 @@ export class LockService {
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `pnpm test src/locks/service.test.ts`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/locks/service.ts src/locks/service.test.ts
@@ -457,7 +459,7 @@ git commit -m "feat: implement LockService with tests"
 
 - Create: `src/locks/routes.ts`
 
-- [ ] **Step 1: Write Route Implementations**
+- [x] **Step 1: Write Route Implementations**
 
 Create `src/locks/routes.ts`:
 
@@ -539,7 +541,7 @@ export const lockRoutes = (options: RouteOptions): FastifyPluginAsync => {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/locks/routes.ts
@@ -554,7 +556,7 @@ git commit -m "feat: implement fastify routes for locks"
 - Create: `src/index.ts`
 - Create: `src/otel.ts`
 
-- [ ] **Step 1: Write OpenTelemetry setup**
+- [x] **Step 1: Write OpenTelemetry setup**
 
 Create `src/otel.ts`:
 
@@ -569,7 +571,7 @@ export const sdk = new NodeSDK({
 sdk.start()
 ```
 
-- [ ] **Step 2: Write App Builder**
+- [x] **Step 2: Write App Builder**
 
 Create `src/app.ts`:
 
@@ -635,7 +637,7 @@ export function buildApp() {
 }
 ```
 
-- [ ] **Step 3: Write Entrypoint**
+- [x] **Step 3: Write Entrypoint**
 
 Create `src/index.ts`:
 
@@ -668,7 +670,7 @@ process.on('SIGINT', () => void gracefulShutdown())
 void start()
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/app.ts src/index.ts src/otel.ts
@@ -681,7 +683,7 @@ git commit -m "feat: assemble app factory and server entrypoint"
 
 - Delete old NestJS code in `src/` (and test/ e2e config).
 
-- [ ] **Step 1: Remove old framework files**
+- [x] **Step 1: Remove old framework files**
 
 ```bash
 rm -rf test/
@@ -698,7 +700,7 @@ rm -f src/locks/lock.controller*
 rm -f src/locks/lock.service*
 ```
 
-- [ ] **Step 2: Run all tests and build**
+- [x] **Step 2: Run all tests and build**
 
 Run: `pnpm test`
 Expected: PASS
@@ -706,9 +708,69 @@ Expected: PASS
 Run: `pnpm build`
 Expected: Successfully generates `dist/`
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add -A
 git commit -m "chore: remove old nestjs code and verify build"
 ```
+
+## Outcome
+
+**Status:** complete and verified. Every step above was executed; the code blocks remain the plan as
+written, not a description of the current source — where the two differ, `src/` and
+[the design document](../specs/2026-05-25-locking-service-rewrite-design.md) are authoritative.
+
+Deltas between the plan and what shipped, all deliberate:
+
+- **Config source: environment variables → YAML via `CONFIG_PATH`.** The plan read `PORT`, `REDIS_URL`
+  and `REDIS_KEY_PREFIX` from the environment. Shipping that would have changed the operations
+  contract, so configuration stayed a `configuration.yaml` (`CONFIG_PATH`, default
+  `${XDG_CONFIG_HOME:-~/.config}/locking-service/configuration.yaml`) validated by zod at boot, now with
+  `app.host`/`app.port`/`app.pretty`, sentinel XOR host rules, `${env.VAR}` substitution and a required
+  `NODE_ENV`.
+- **`KEYS` → `SCAN` with prefix stripping.** The plan listed `keys`. Listing now runs a `SCAN` cursor loop
+  plus one `MGET`, and strips `keyPrefix` from the scanned keys because ioredis prefixes
+  `GET`/`SET`/`DEL`/`MGET` but not `SCAN MATCH`. Without the strip, `GET /locks` returned `[]` for every
+  deployment with a prefix configured — found during verification and pinned by a repository test.
+- **`duration` stays numeric in responses.** The plan's `Lock` reused the request string; the shipped
+  resource stores and returns the parsed number of seconds (matching the old `LockDto` and
+  `openapi.yaml`) while the request body keeps the timestring.
+- **A compatibility error layer was added.** The plan's handler emitted Fastify-shaped bodies
+  (`error` from `error.name`, `An unexpected error occurred`). The shipped service reproduces
+  class-validator's message array and ordering, the 404/409 key order, a 409 without an `error` member
+  (typo included), the generic 500 body and the Express-style `Cannot <METHOD> <path>` 404, and also
+  gained empty-body `DELETE` (200, no content-type), weak `ETag`/`304`, `{}` for an empty JSON body and
+  `app.pretty`.
+- **Swagger was re-added.** It was missing from the plan but present in the published service:
+  `/api` and `/api-json` via `@fastify/swagger` 9 + `@fastify/swagger-ui` 6, with a `transformObject`
+  hook adding the responses route schemas cannot express, and `openapi.yaml` regenerated from
+  `/api-json`.
+- **`@fastify/otel` was left unused.** Declared in the plan's dependency list and never wired in; it now
+  sits as dead weight that also emits a peer warning. Wire it or drop it.
+- **Telemetry needed a policy the plan did not have.** `sdk-node` 0.3x enables its bundled OTLP exporters
+  when `OTEL_*_EXPORTER` is unset, so `src/otel.ts` defaults traces, metrics and logs to `none` and
+  shutdown survives a failed flush.
+- **Tooling, Docker and CI were aligned with `zigbee2mqtt-exporter`.** `tsconfig.build.json` excluding
+  tests (`build` uses it), a flat type-aware ESLint reference config, lefthook commit/push hooks,
+  `.nvmrc`, `pnpm-workspace.yaml` `allowBuilds`, a digest-pinned multi-stage Dockerfile
+  (`node:24.22.1-alpine`, `USER node`, no test stage) and a single `verify` CI job
+  (install → audit → format:check → lint → typecheck → test:coverage → upload → build → Docker smoke
+  build).
+- **Verification went past the plan.** Instead of unit tests only, the suite is five files and 56 tests:
+  `app.inject` contract tests asserting exact status, content type and body bytes, plus the repository
+  prefix regression. In addition, a 27-case HTTP capture from the previous NestJS service against a real
+  Redis was diffed against the new implementation (timestamps and `GET /locks` ordering aside) — the
+  responses match.
+- **Versions moved with the ecosystem:** Fastify 4 → 5, `@fastify/type-provider-zod` →
+  `fastify-type-provider-zod` 4.x, `@opentelemetry/sdk-node` 0.52 → 0.300, pnpm 10.9 → 12.15.0,
+  TypeScript 6. zod stays 3.x and vitest 2.x.
+
+Follow-ups carried out of this plan:
+
+- zod 4 + `fastify-type-provider-zod` 7 migration, which clears the last accepted production advisory
+  (CI audits at `--audit-level critical` until then).
+- A 100% coverage gate once the remaining branches are covered on purpose (today: 97.08% statements,
+  84% branches).
+- `@fastify/otel`: wire it in or remove it, and with it the `@opentelemetry/api <1.10.0` peer warning.
+- vitest 2.x dev-toolchain advisories, resolved by the vitest 5 / vite 8 line.
