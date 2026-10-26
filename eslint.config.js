@@ -26,15 +26,7 @@ export default [
     },
   },
   {
-    ignores: [
-      "dist/**",
-      "node_modules/**",
-      "coverage/**",
-      "*.config.js",
-      "*.config.ts",
-      "src/**/*.test.ts",
-      "src/**/*.spec.ts",
-    ],
+    ignores: ["dist/**", "node_modules/**", "coverage/**", "*.config.js", "*.config.ts"],
   },
   prettierConfig,
 ]

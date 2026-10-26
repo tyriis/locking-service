@@ -13,20 +13,22 @@ const testConfig = (app: Partial<Config["app"]> = {}): Config => ({
 class InMemoryLockRepository implements LockRepository {
   readonly locks = new Map<string, Lock>()
 
-  async get(key: string): Promise<Lock | null> {
-    return this.locks.get(key) ?? null
+  get(key: string): Promise<Lock | null> {
+    return Promise.resolve(this.locks.get(key) ?? null)
   }
 
-  async set(key: string, lock: Lock): Promise<void> {
+  set(key: string, lock: Lock): Promise<void> {
     this.locks.set(key, lock)
+    return Promise.resolve()
   }
 
-  async delete(key: string): Promise<void> {
+  delete(key: string): Promise<void> {
     this.locks.delete(key)
+    return Promise.resolve()
   }
 
-  async getAll(): Promise<Lock[]> {
-    return [...this.locks.values()]
+  getAll(): Promise<Lock[]> {
+    return Promise.resolve([...this.locks.values()])
   }
 }
 
@@ -433,6 +435,93 @@ describe("contract: pretty printing", () => {
 })
 
 describe("contract: openapi", () => {
+  /**
+   * The subset of the OpenAPI document these tests read. The served document is
+   * JSON, so the nested members are modelled as optional and narrowed by the
+   * accessors below instead of being read off `any`.
+   */
+  interface OpenApiSchema {
+    type?: string
+    minLength?: number
+    example?: unknown
+    properties?: Record<string, OpenApiSchema>
+    items?: OpenApiSchema
+  }
+
+  interface OpenApiMediaType {
+    schema: OpenApiSchema
+  }
+
+  interface OpenApiResponse {
+    description?: string
+    content?: Record<string, OpenApiMediaType>
+  }
+
+  interface OpenApiOperation {
+    requestBody?: { content?: Record<string, OpenApiMediaType> }
+    responses: Record<string, OpenApiResponse>
+  }
+
+  interface OpenApiPathItem {
+    get?: OpenApiOperation
+    post?: OpenApiOperation
+  }
+
+  interface OpenApiDocument {
+    paths: Record<string, OpenApiPathItem>
+  }
+
+  const operationOf = (
+    doc: OpenApiDocument,
+    path: string,
+    method: "get" | "post"
+  ): OpenApiOperation => {
+    const operation = doc.paths[path]?.[method]
+    if (!operation) {
+      throw new Error(`OpenAPI document has no ${method.toUpperCase()} ${path}`)
+    }
+    return operation
+  }
+
+  const responseOf = (operation: OpenApiOperation, status: string): OpenApiResponse => {
+    const response = operation.responses[status]
+    if (!response) {
+      throw new Error(`operation has no ${status} response`)
+    }
+    return response
+  }
+
+  const mediaSchemaOf = (
+    media: Record<string, OpenApiMediaType> | undefined,
+    mediaType: string
+  ): OpenApiSchema => {
+    const entry = media?.[mediaType]
+    if (!entry) {
+      throw new Error(`document has no ${mediaType} content`)
+    }
+    return entry.schema
+  }
+
+  const responseSchemaOf = (response: OpenApiResponse, mediaType: string): OpenApiSchema =>
+    mediaSchemaOf(response.content, mediaType)
+
+  const requestSchemaOf = (operation: OpenApiOperation, mediaType: string): OpenApiSchema =>
+    mediaSchemaOf(operation.requestBody?.content, mediaType)
+
+  const propertiesOf = (schema: OpenApiSchema): Record<string, OpenApiSchema> => {
+    if (!schema.properties) {
+      throw new Error("schema has no properties")
+    }
+    return schema.properties
+  }
+
+  const itemsOf = (schema: OpenApiSchema): OpenApiSchema => {
+    if (!schema.items) {
+      throw new Error("schema has no items")
+    }
+    return schema.items
+  }
+
   it("serves the swagger UI and the OpenAPI document", async () => {
     const { app } = createApp()
 
@@ -449,55 +538,58 @@ describe("contract: openapi", () => {
   it("documents the request and the response schema", async () => {
     const { app } = createApp()
     const res = await app.inject({ method: "GET", url: "/api-json" })
-    const doc = res.json<Record<string, any>>()
+    const doc = res.json<OpenApiDocument>()
 
     expect(Object.keys(doc.paths)).toEqual(
       expect.arrayContaining(["/", "/health", "/locks", "/locks/{key}"])
     )
 
-    const create = doc.paths["/locks"].post
-    const request = create.requestBody.content["application/json"].schema
-    expect(request.properties.key.minLength).toBe(3)
-    expect(request.properties.duration.type).toBe("string")
-    expect(request.properties.duration.minLength).toBe(2)
+    const create = operationOf(doc, "/locks", "post")
+    const request = propertiesOf(requestSchemaOf(create, "application/json"))
+    expect(request.key.minLength).toBe(3)
+    expect(request.duration.type).toBe("string")
+    expect(request.duration.minLength).toBe(2)
 
-    const created = create.responses["201"].content["application/json"].schema
-    expect(created.properties.duration.type).toBe("number")
+    const created = propertiesOf(responseSchemaOf(responseOf(create, "201"), "application/json"))
+    expect(created.duration.type).toBe("number")
 
-    const listed = doc.paths["/locks"].get.responses["200"].content["application/json"].schema
-    expect(listed.items.properties.duration.type).toBe("number")
+    const listed = responseSchemaOf(
+      responseOf(operationOf(doc, "/locks", "get"), "200"),
+      "application/json"
+    )
+    expect(propertiesOf(itemsOf(listed)).duration.type).toBe("number")
   })
 
   it("documents the identifier and the health endpoint as string responses", async () => {
     const { app } = createApp()
     const res = await app.inject({ method: "GET", url: "/api-json" })
-    const doc = res.json<Record<string, any>>()
+    const doc = res.json<OpenApiDocument>()
 
-    const identifier = doc.paths["/"].get.responses["200"]
-    expect(identifier.content["application/json"].schema).toEqual({ type: "string" })
+    const identifier = responseOf(operationOf(doc, "/", "get"), "200")
+    expect(responseSchemaOf(identifier, "application/json")).toEqual({ type: "string" })
 
-    const health = doc.paths["/health"].get.responses["200"]
-    expect(health.content["text/plain"].schema).toEqual({ type: "string" })
+    const health = responseOf(operationOf(doc, "/health", "get"), "200")
+    expect(responseSchemaOf(health, "text/plain")).toEqual({ type: "string" })
   })
 
   it("documents the failure responses of the lock routes", async () => {
     const { app } = createApp()
     const res = await app.inject({ method: "GET", url: "/api-json" })
-    const doc = res.json<Record<string, any>>()
+    const doc = res.json<OpenApiDocument>()
 
-    const findOne = doc.paths["/locks/{key}"].get.responses
+    const findOne = operationOf(doc, "/locks/{key}", "get").responses
     expect(Object.keys(findOne)).toEqual(expect.arrayContaining(["400", "404", "500"]))
     expect(findOne["404"].description).toBe("Lock with given key not found")
-    expect(findOne["404"].content["application/json"].schema.example).toEqual({
+    expect(responseSchemaOf(findOne["404"], "application/json").example).toEqual({
       statusCode: 404,
       error: "Not Found",
       message: "lock 'some-fancy-lock.name' not found",
     })
     expect(findOne["500"].description).toBe("Internal server error")
 
-    const create = doc.paths["/locks"].post.responses
+    const create = operationOf(doc, "/locks", "post").responses
     expect(Object.keys(create)).toEqual(expect.arrayContaining(["201", "400", "409", "500"]))
-    expect(create["409"].content["application/json"].schema.example).toEqual({
+    expect(responseSchemaOf(create["409"], "application/json").example).toEqual({
       statusCode: 409,
       message: "lock 'some-fancy-lock.name' already aquired!",
     })
@@ -507,11 +599,13 @@ describe("contract: openapi", () => {
   it("documents owner without a minLength", async () => {
     const { app } = createApp()
     const res = await app.inject({ method: "GET", url: "/api-json" })
-    const doc = res.json<Record<string, any>>()
+    const doc = res.json<OpenApiDocument>()
 
-    const request = doc.paths["/locks"].post.requestBody.content["application/json"].schema
-    expect(request.properties.owner.type).toBe("string")
-    expect(request.properties.owner.minLength).toBeUndefined()
+    const request = propertiesOf(
+      requestSchemaOf(operationOf(doc, "/locks", "post"), "application/json")
+    )
+    expect(request.owner.type).toBe("string")
+    expect(request.owner.minLength).toBeUndefined()
   })
 })
 

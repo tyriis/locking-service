@@ -15,20 +15,20 @@ class PrefixedFakeRedis implements RedisClient {
     return `${this.prefix}${key}`
   }
 
-  async get(key: string): Promise<string | null> {
-    return this.store.get(this.prefixed(key)) ?? null
+  get(key: string): Promise<string | null> {
+    return Promise.resolve(this.store.get(this.prefixed(key)) ?? null)
   }
 
-  async set(key: string, value: string): Promise<"OK"> {
+  set(key: string, value: string): Promise<"OK"> {
     this.store.set(this.prefixed(key), value)
-    return "OK"
+    return Promise.resolve<"OK">("OK")
   }
 
-  async del(key: string): Promise<number> {
-    return this.store.delete(this.prefixed(key)) ? 1 : 0
+  del(key: string): Promise<number> {
+    return Promise.resolve(this.store.delete(this.prefixed(key)) ? 1 : 0)
   }
 
-  async scan(
+  scan(
     _cursor: string,
     _matchKeyword: "MATCH",
     pattern: string,
@@ -37,11 +37,14 @@ class PrefixedFakeRedis implements RedisClient {
   ): Promise<[string, string[]]> {
     const escaped = pattern.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*")
     const matcher = new RegExp(`^${escaped}$`)
-    return ["0", [...this.store.keys()].filter((key) => matcher.test(key))]
+    return Promise.resolve<[string, string[]]>([
+      "0",
+      [...this.store.keys()].filter((key) => matcher.test(key)),
+    ])
   }
 
-  async mget(keys: string[]): Promise<(string | null)[]> {
-    return keys.map((key) => this.store.get(this.prefixed(key)) ?? null)
+  mget(keys: string[]): Promise<(string | null)[]> {
+    return Promise.resolve(keys.map((key) => this.store.get(this.prefixed(key)) ?? null))
   }
 }
 
