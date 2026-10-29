@@ -33,19 +33,19 @@ jobs:
     name: Renovate
     runs-on: ubuntu-latest
     steps:
-      # https://github.com/marketplace/actions/github-app-token
+      # https://github.com/marketplace/actions/create-github-app-token
       - name: Generate Token
-        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2.1.0
-        id: generate-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
         with:
-          app_id: "${{ secrets.BOT_APP_ID }}"
-          private_key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+          client-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
       # https://github.com/marketplace/actions/checkout
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          token: "${{ steps.generate-token.outputs.token }}"
+          token: "${{ steps.app-token.outputs.token }}"
 
       - name: Override default config from dispatch variables
         run: |
@@ -57,4 +57,4 @@ jobs:
         uses: renovatebot/github-action@2804199d260ad00c1fae0e9e842888369391c776 # v46.3.10
         with:
           configurationFile: "${{ env.RENOVATE_CONFIG_FILE }}"
-          token: "${{ steps.generate-token.outputs.token }}"
+          token: "${{ steps.app-token.outputs.token }}"
