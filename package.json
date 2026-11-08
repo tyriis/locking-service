@@ -45,7 +45,7 @@
     "vitest": "5.1.0"
   },
   "dependencies": {
-    "@fastify/etag": "6.2.1",
+    "@fastify/etag": "6.2.2",
     "@fastify/otel": "0.21.4",
     "@fastify/swagger": "9.9.3",
     "@fastify/swagger-ui": "6.1.3",
