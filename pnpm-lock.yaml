@@ -182,8 +182,8 @@ importers:
         specifier: 1.0.1
         version: 1.0.1(@opentelemetry/api@1.10.0)
       '@fastify/swagger':
-        specifier: 9.9.4
-        version: 9.9.4
+        specifier: 9.9.5
+        version: 9.9.5
       '@fastify/swagger-ui':
         specifier: 6.1.4
         version: 6.1.4
@@ -201,7 +201,7 @@ importers:
         version: 5.12.8
       fastify-type-provider-zod:
         specifier: 7.0.0
-        version: 7.0.0(@fastify/swagger@9.9.4)(fastify@5.12.8)(openapi-types@12.1.3)(zod@4.6.7)
+        version: 7.0.0(@fastify/swagger@9.9.5)(fastify@5.12.8)(openapi-types@12.1.3)(zod@4.6.7)
       ioredis:
         specifier: 6.0.0
         version: 6.0.0
@@ -518,8 +518,8 @@ packages:
   '@fastify/swagger-ui@6.1.4':
     resolution: {integrity: sha512-MXlo63IvSGkoi2MRbsRRHSoZD4cm/t2zEpKX20LEdSX8cChAq6phPhOWvgZM78Y2WmM40bmuD+pZFlrCYrCsMQ==}
 
-  '@fastify/swagger@9.9.4':
-    resolution: {integrity: sha512-kOqd32l4eYuDSfPQs0uppTj+gqdOrfPs5kNljQy3ZL2S7EVn41GvyAYA9wXxY8rS+/88HHR8YjYhGOpvtqrPCw==}
+  '@fastify/swagger@9.9.5':
+    resolution: {integrity: sha512-2X/MXoTv3Jhxegju9DwjOTKcDT86q0SDPIuuZDx9DHfRsHzpVfxVIXzP73X+qcEA1j7N+k7Cm95h9esGy/oBgA==}
 
   '@grpc/grpc-js@1.14.7':
     resolution: {integrity: sha512-W4W/fcBMGRVtG6dW2c7cw2mnpS3hvbBd+oQXjh2iYFTZDk1JJmcNqkM5KSaPubQpamlUUurrlb7G1s9NJeERmQ==}
@@ -2146,7 +2146,7 @@ snapshots:
       rfdc: 1.4.1
       yaml: 2.9.1
 
-  '@fastify/swagger@9.9.4':
+  '@fastify/swagger@9.9.5':
     dependencies:
       fastify-plugin: 6.0.1
       json-schema-resolver: 3.0.0
@@ -2892,10 +2892,10 @@ snapshots:
 
   fastify-plugin@6.0.1: {}
 
-  fastify-type-provider-zod@7.0.0(@fastify/swagger@9.9.4)(fastify@5.12.8)(openapi-types@12.1.3)(zod@4.6.7):
+  fastify-type-provider-zod@7.0.0(@fastify/swagger@9.9.5)(fastify@5.12.8)(openapi-types@12.1.3)(zod@4.6.7):
     dependencies:
       '@fastify/error': 4.2.1
-      '@fastify/swagger': 9.9.4
+      '@fastify/swagger': 9.9.5
       fastify: 5.12.8
       openapi-types: 12.1.3
       zod: 4.6.7
