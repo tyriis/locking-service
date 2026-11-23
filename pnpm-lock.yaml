@@ -185,8 +185,8 @@ importers:
         specifier: 9.9.5
         version: 9.9.5
       '@fastify/swagger-ui':
-        specifier: 6.1.4
-        version: 6.1.4
+        specifier: 6.1.5
+        version: 6.1.5
       '@opentelemetry/api':
         specifier: 1.10.0
         version: 1.10.0
@@ -515,8 +515,8 @@ packages:
   '@fastify/static@10.1.12':
     resolution: {integrity: sha512-D0pmf8OgurIsKiIjxC8ZJP/bCYnUSAiU6PS/se/6Me63UoliAu8FqrzDRX8FdgJMqFMXy45ISlfUZ1Gi6AJnqA==}
 
-  '@fastify/swagger-ui@6.1.4':
-    resolution: {integrity: sha512-MXlo63IvSGkoi2MRbsRRHSoZD4cm/t2zEpKX20LEdSX8cChAq6phPhOWvgZM78Y2WmM40bmuD+pZFlrCYrCsMQ==}
+  '@fastify/swagger-ui@6.1.5':
+    resolution: {integrity: sha512-OZaIUEbuAO6rb7+j80rie/FppKmT0xlLxjBVjCaTuu3JLEnhqKxycTCPkZxH3jiVA8jLDzTrENVaANUQX/y94w==}
 
   '@fastify/swagger@9.9.5':
     resolution: {integrity: sha512-2X/MXoTv3Jhxegju9DwjOTKcDT86q0SDPIuuZDx9DHfRsHzpVfxVIXzP73X+qcEA1j7N+k7Cm95h9esGy/oBgA==}
@@ -2138,7 +2138,7 @@ snapshots:
       fastq: 1.20.3
       glob: 14.0.6
 
-  '@fastify/swagger-ui@6.1.4':
+  '@fastify/swagger-ui@6.1.5':
     dependencies:
       '@fastify/static': 10.1.12
       fastify-plugin: 6.0.1
