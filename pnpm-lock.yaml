@@ -189,8 +189,8 @@ importers:
         specifier: 6.2.2
         version: 6.2.2
       '@fastify/otel':
-        specifier: 1.0.1
-        version: 1.0.1(@opentelemetry/api@1.10.0)
+        specifier: 1.0.2
+        version: 1.0.2(@opentelemetry/api@1.10.0)
       '@fastify/swagger':
         specifier: 9.9.5
         version: 9.9.5
@@ -510,8 +510,8 @@ packages:
   '@fastify/merge-json-schemas@0.2.2':
     resolution: {integrity: sha512-d/gx9sRbUCVgGRGzma46wLcwiY8noTqO2Nmjg/vbTARxHRE5bdh5PIL8s97Lt1X7ScRWRW52eVYxwIoPwIdVUA==}
 
-  '@fastify/otel@1.0.1':
-    resolution: {integrity: sha512-gTZ7YShjZfZ7ngTBUhKdnUsDxsQT8MnMuIFwDh5n0QykQwfe5h9wvcXAWZjg8RNHwW0xKxugyMun5ZsD7r88JQ==}
+  '@fastify/otel@1.0.2':
+    resolution: {integrity: sha512-sMvyfFh6rPLqgzsNVyvZLHU4afp7hk59ESOMsG2P0UsKjElMURvbYkVNeCnvBqn5WF23ejBmfnkcr1Jacsj2uw==}
     engines: {node: '>=22.15.0'}
     peerDependencies:
       '@opentelemetry/api': '>=1.10.0 <1.11.0'
@@ -692,12 +692,6 @@ packages:
     engines: {node: '>=22.15.0'}
     peerDependencies:
       '@opentelemetry/api': ^1.10.0
-
-  '@opentelemetry/instrumentation@0.300.0':
-    resolution: {integrity: sha512-8ugx3X75uK2+rFZ9pX252ruDRELE2F7T3Zwazyll21aXksm+d2JLc9Np9SPS48K4ohGeaaXXHSX4ghxuNQ/gMg==}
-    engines: {node: '>=22.15.0'}
-    peerDependencies:
-      '@opentelemetry/api': '>=1.10.0 <1.11.0'
 
   '@opentelemetry/instrumentation@0.301.2':
     resolution: {integrity: sha512-14ZUepvK+YiMfhy3Hugh4UuY5THEfVOcsY0+L+DertoVmdh4MTR5H0JvD1IT2jGLKPZiIg+apDCM2CTuGh6UzQ==}
@@ -2111,11 +2105,11 @@ snapshots:
     dependencies:
       dequal: 2.0.3
 
-  '@fastify/otel@1.0.1(@opentelemetry/api@1.10.0)':
+  '@fastify/otel@1.0.2(@opentelemetry/api@1.10.0)':
     dependencies:
       '@opentelemetry/api': 1.10.0
       '@opentelemetry/core': 3.1.1(@opentelemetry/api@1.10.0)
-      '@opentelemetry/instrumentation': 0.300.0(@opentelemetry/api@1.10.0)
+      '@opentelemetry/instrumentation': 0.301.2(@opentelemetry/api@1.10.0)
       '@opentelemetry/semantic-conventions': 1.45.0
       minimatch: 11.0.9
     transitivePeerDependencies:
@@ -2327,14 +2321,6 @@ snapshots:
       '@opentelemetry/instrumentation': 0.301.2(@opentelemetry/api@1.10.0)
       '@opentelemetry/semantic-conventions': 1.45.0
       forwarded-parse: 2.2.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@opentelemetry/instrumentation@0.300.0(@opentelemetry/api@1.10.0)':
-    dependencies:
-      '@opentelemetry/api': 1.10.0
-      import-in-the-middle: 3.6.0
-      require-in-the-middle: 8.0.1
     transitivePeerDependencies:
       - supports-color
 
